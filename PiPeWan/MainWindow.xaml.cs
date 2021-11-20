@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PiPeWan.HelperClasses;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,8 +19,11 @@ namespace PiPeWan {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
+        public static BoundProperties _BoundProperties = new BoundProperties();
+
         public MainWindow() {
             InitializeComponent();
+            DataContext = _BoundProperties;
         }
     }
 }
