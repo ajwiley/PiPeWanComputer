@@ -16,15 +16,18 @@ using System.Net.Sockets;
 using System.IO.Ports;
 
 
-namespace PiPeWanComputer {    
+namespace PiPeWanComputer {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
         private static SerialPort _Port = new();
+        private static BoundProperties _BoundProperties = new BoundProperties();
         
         public MainWindow() {
             InitializeComponent();
+            DataContext = _BoundProperties;
+
             _Port.Dispose();
 
             try {
