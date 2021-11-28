@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="{Binding SerialData}" VerticalAlignment="Top" Width="171" Height="98"/>
+        <TextBox HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding SerialData}" VerticalAlignment="Center" Width="780" Height="414"/>
 
     </Grid>
 </Window>
