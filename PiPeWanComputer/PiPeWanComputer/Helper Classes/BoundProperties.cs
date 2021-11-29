@@ -5,9 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using LiveCharts;
 
 namespace PiPeWanComputer {
     public class BoundProperties : INotifyPropertyChanged {
+        #region "Serial information"
+
+        // Information we get from the SparkFun Pro RF
         private string _SerialData = "";
         public string SerialData {
             get => _SerialData;
@@ -17,24 +21,7 @@ namespace PiPeWanComputer {
             }
         }
 
-        private LiveCharts.ChartValues<TemperatureGraph> _TempGraph = new LiveCharts.ChartValues<TemperatureGraph>();
-        public LiveCharts.ChartValues<TemperatureGraph> TempGraph {
-            get => _TempGraph;
-            set {
-                _TempGraph = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private LiveCharts.ChartValues<FlowGraph> _FlowGraph = new LiveCharts.ChartValues<FlowGraph>();
-        public LiveCharts.ChartValues<FlowGraph> FlowGraph {
-            get => _FlowGraph;
-            set {
-                _FlowGraph = value;
-                OnPropertyChanged();
-            }
-        }
-
+        // Temperature from SparkFun
         private double _Temperature;
         public double Temperature {
             get => _Temperature;
@@ -45,6 +32,7 @@ namespace PiPeWanComputer {
             }
         }
 
+        // Temperature we want to display (formatted nicely)
         private string _Temp = "";
         public string Temp {
             get => _Temp;
@@ -54,6 +42,7 @@ namespace PiPeWanComputer {
             }
         }
 
+        // Flow from SparkFun
         private double _FlowRate;
         public double FlowRate {
             get => _FlowRate;
@@ -64,6 +53,7 @@ namespace PiPeWanComputer {
             }
         }
 
+        // Flow we want to display (formatted nicely)
         private string _Flow = "";
         public string Flow {
             get => _Flow;
@@ -72,6 +62,32 @@ namespace PiPeWanComputer {
                 OnPropertyChanged();
             }
         }
+
+        #endregion
+
+        #region "LiveCharts graph data"
+
+        // Temperature graph values
+        private ChartValues<TemperatureGraph> _TempGraph = new();
+        public ChartValues<TemperatureGraph> TempGraph {
+            get => _TempGraph;
+            set {
+                _TempGraph = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Flow graph values
+        private ChartValues<FlowGraph> _FlowGraph = new();
+        public ChartValues<FlowGraph> FlowGraph {
+            get => _FlowGraph;
+            set {
+                _FlowGraph = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion
 
         public BoundProperties() { }
 

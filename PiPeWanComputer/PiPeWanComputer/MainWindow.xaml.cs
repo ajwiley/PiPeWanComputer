@@ -76,8 +76,12 @@ namespace PiPeWanComputer {
 
             // Parse the information
             string[] InfoSplit = _BoundProperties.SerialData.Split("\n");
+
+            // Get the temperature
             double Temp = Convert.ToDouble(InfoSplit[0].Split(":")[1].Trim().Trim('F'));
             _BoundProperties.Temperature = Temp;
+
+            // Get the flow rate
             double Flow = Convert.ToDouble(InfoSplit[1].Split(" ")[0]);
             _BoundProperties.FlowRate = Flow;
         }
