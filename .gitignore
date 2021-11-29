@@ -190,3 +190,5 @@ git_stats/*
 StyleCop.Cache
 bin
 obj
+PiPeWanComputer/.vs/PiPeWanComputer/DesignTimeBuild/.dtbcache.v2
+PiPeWanComputer/.vs/PiPeWanComputer/v17/.futdcache.v1

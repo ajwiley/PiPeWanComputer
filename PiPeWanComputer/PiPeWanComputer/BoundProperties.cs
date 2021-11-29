@@ -18,6 +18,24 @@ namespace PiPeWanComputer {
             }
         }
 
+        private LiveCharts.ChartValues<TemperatureGraph> _TempGraph = new LiveCharts.ChartValues<TemperatureGraph>();
+        public LiveCharts.ChartValues<TemperatureGraph> TempGraph {
+            get => _TempGraph;
+            set {
+                _TempGraph = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private double _Temperature;
+        public double Temperature {
+            get => _Temperature;
+            set {
+                _Temperature = value;
+                OnPropertyChanged();
+            }
+        }
+
         public BoundProperties() {
             SerialData = "Other thing";
         }

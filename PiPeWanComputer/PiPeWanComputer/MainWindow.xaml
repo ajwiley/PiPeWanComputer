@@ -4,10 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PiPeWanComputer"
+        xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        Closing="Window_Closing">
     <Grid>
-        <TextBox HorizontalAlignment="Center" TextWrapping="Wrap" Text="{Binding SerialData}" VerticalAlignment="Center" Width="780" Height="414"/>
-
+        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding SerialData}"  Width="223" Margin="10,10,0,298"/>
+        <Wpf:CartesianChart Name="chtTemp" Margin="238,10,10,10">
+            <Wpf:CartesianChart.Series>
+                <Wpf:LineSeries Values="{Binding TempGraph}"/>
+            </Wpf:CartesianChart.Series>
+            <Wpf:CartesianChart.AxisX>
+                <Wpf:Axis Title="Time"/>
+            </Wpf:CartesianChart.AxisX>
+            <Wpf:CartesianChart.AxisY>
+                <Wpf:Axis Title="Temperature"/>
+            </Wpf:CartesianChart.AxisY>
+        </Wpf:CartesianChart>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>
