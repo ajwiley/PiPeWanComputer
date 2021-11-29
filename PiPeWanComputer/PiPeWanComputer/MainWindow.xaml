@@ -8,6 +8,7 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         MinHeight="450" MinWidth="800">
+
     <Grid>
         <TabControl>
             <TabControl.Resources>
@@ -38,7 +39,7 @@
 
                     <Viewbox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
                         <Grid>
-                            <Label Content="Current Temp (F):" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="98"/>
+                            <Label Content="Current Temp (F):" HorizontalAlignment="Left" Margin="6,0,0,0" VerticalAlignment="Top" Width="102"/>
                             <TextBox HorizontalAlignment="Left" Margin="113,0,0,0" TextWrapping="Wrap" Text="{Binding Temp}" VerticalAlignment="Center" Height="26" Width="104" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
                         </Grid>
                     </Viewbox>
@@ -56,7 +57,7 @@
                                 <Wpf:LineSeries Values="{Binding TempGraph}"/>
                             </Wpf:CartesianChart.Series>
                             <Wpf:CartesianChart.AxisX>
-                                <Wpf:Axis Title="Time (S)" MinValue="0"/>
+                                <Wpf:Axis Title="Time (seconds)" MinValue="0"/>
                             </Wpf:CartesianChart.AxisX>
                             <Wpf:CartesianChart.AxisY>
                                 <Wpf:Axis Title="Temperature (F)" MinValue="-30" MaxValue="150"/>
@@ -70,10 +71,10 @@
                                 <Wpf:LineSeries Values="{Binding FlowGraph}"/>
                             </Wpf:CartesianChart.Series>
                             <Wpf:CartesianChart.AxisX>
-                                <Wpf:Axis Title="Time (S)" MinValue="0"/>
+                                <Wpf:Axis Title="Time (seconds)" MinValue="0"/>
                             </Wpf:CartesianChart.AxisX>
                             <Wpf:CartesianChart.AxisY>
-                                <Wpf:Axis Title="Flow (L/H)" MinValue="0" MaxValue="500"/>
+                                <Wpf:Axis Title="Flow (L/min)" MinValue="0" MaxValue="60"/>
                             </Wpf:CartesianChart.AxisY>
                         </Wpf:CartesianChart>
                     </Grid>

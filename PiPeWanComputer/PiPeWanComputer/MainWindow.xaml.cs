@@ -78,18 +78,21 @@ namespace PiPeWanComputer {
             _BoundProperties.SerialData = _Port.ReadExisting(); // Read in the info
 
             // Parse the information
-            string[] InfoSplit = _BoundProperties.SerialData.Split("\n");
+            string[] InfoSplit = _BoundProperties.SerialData.Split(",");
 
             // Get the temperature
-            double Temp = Convert.ToDouble(InfoSplit[0].Split(":")[1].Trim().Trim('F'));
-            _BoundProperties.Temperature = Temp;
+            double Temperature = Convert.ToDouble(InfoSplit[0].Trim());
+            _BoundProperties.Temperature = Temperature;
 
             // Get the flow rate
-            double Flow = Convert.ToDouble(InfoSplit[1].Split(" ")[0]);
+            double Flow = Convert.ToDouble(InfoSplit[1].Trim());
             _BoundProperties.FlowRate = Flow;
         }
 
-        public string ComPortNames(string VID, string PID) {
+        /// <summary>
+        /// Get the COM port for the SparkFun Pro RF
+        /// </summary>
+        public static string ComPortNames(string VID, string PID) {
             // Information we are looking for from the com port
             string pattern = string.Format("^VID_{0}.PID_{1}", VID, PID);
             Regex _RegexPattern = new Regex(pattern, RegexOptions.IgnoreCase);

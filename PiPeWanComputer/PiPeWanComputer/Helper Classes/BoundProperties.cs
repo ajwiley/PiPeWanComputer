@@ -12,7 +12,7 @@ namespace PiPeWanComputer {
         #region "Serial information"
 
         // The COM port for the SparkFun Pro RF
-        private string _RFIDComPort;
+        private string _RFIDComPort = "";
         public string RFIDComPort {
             get => _RFIDComPort;
             set {
