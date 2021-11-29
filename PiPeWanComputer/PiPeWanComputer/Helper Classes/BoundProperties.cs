@@ -11,6 +11,17 @@ namespace PiPeWanComputer {
     public class BoundProperties : INotifyPropertyChanged {
         #region "Serial information"
 
+        // The COM port for the SparkFun Pro RF
+        private string _RFIDComPort;
+        public string RFIDComPort {
+            get => _RFIDComPort;
+            set {
+                _RFIDComPort = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         // Information we get from the SparkFun Pro RF
         private string _SerialData = "";
         public string SerialData {

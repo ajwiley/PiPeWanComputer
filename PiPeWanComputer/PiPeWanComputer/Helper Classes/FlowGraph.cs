@@ -9,9 +9,6 @@ namespace PiPeWanComputer {
         public double Flow { get; set; }
         public double Time { get; set; }
 
-        public FlowGraph(double Flow) {
-            this.Flow = Flow;
-        }
         public FlowGraph(double Flow, double Milliseconds) {
             this.Flow = Flow;
             Time = Milliseconds;

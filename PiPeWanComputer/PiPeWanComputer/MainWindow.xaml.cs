@@ -10,6 +10,8 @@ using LiveCharts;
 using LiveCharts.Configurations;
 using System.Diagnostics;
 using System.Windows.Threading;
+using System.Text.RegularExpressions;
+using Microsoft.Win32;
 
 namespace PiPeWanComputer {
     /// <summary>
@@ -28,7 +30,7 @@ namespace PiPeWanComputer {
 
             try {
                 _Port = new SerialPort() {
-                    PortName = "COM3",
+                    PortName = ComPortNames("1B4F", "3ABA"),
                     BaudRate = 9600
                 };
             }
@@ -52,6 +54,7 @@ namespace PiPeWanComputer {
             var FlowMapper = Mappers.Xy<FlowGraph>().X(x => x.Time).Y(x => x.Flow);
             Charting.For<FlowGraph>(FlowMapper);
 
+            // When we close the program it closes faster vs a thread
             GraphTimer.Interval = TimeSpan.FromSeconds(5);
             GraphTimer.Tick += UpdateTempGraph;
             GraphTimer.Start();
@@ -84,6 +87,46 @@ namespace PiPeWanComputer {
             // Get the flow rate
             double Flow = Convert.ToDouble(InfoSplit[1].Split(" ")[0]);
             _BoundProperties.FlowRate = Flow;
+        }
+
+        public string ComPortNames(string VID, string PID) {
+            // Information we are looking for from the com port
+            string pattern = string.Format("^VID_{0}.PID_{1}", VID, PID);
+            Regex _RegexPattern = new Regex(pattern, RegexOptions.IgnoreCase);
+
+            List<string> comports = new List<string>();
+            RegistryKey RegisterKey1 = Registry.LocalMachine;
+            RegistryKey RegisterKey2 = RegisterKey1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
+
+            // Go through each registry
+            foreach (string SubKey3 in RegisterKey2.GetSubKeyNames()) {
+                RegistryKey RegisterKey3 = RegisterKey2.OpenSubKey(SubKey3);
+
+                // Find a match of the registry with what we have
+                foreach (string s in RegisterKey3.GetSubKeyNames()) {
+                    if (_RegexPattern.Match(s).Success) {
+                        RegistryKey RegisterKey4 = RegisterKey3.OpenSubKey(s);
+
+                        foreach (string s2 in RegisterKey4.GetSubKeyNames()) {
+                            RegistryKey RegisterKey5 = RegisterKey4.OpenSubKey(s2);
+                            RegistryKey RegisterKey6 = RegisterKey5.OpenSubKey("Device Parameters");
+                            comports.Add((string)RegisterKey6.GetValue("PortName"));
+                        }
+                    }
+                }
+            }
+
+            // Find the COM port currently in use
+            if (comports.Count > 0) {
+                foreach (string str in SerialPort.GetPortNames()) {
+                    if (comports.Contains(str)) {
+                        _BoundProperties.RFIDComPort = str;
+                        return str;
+                    }
+                }
+            }
+
+            return "";
         }
     }
 }

@@ -9,10 +9,6 @@ namespace PiPeWanComputer {
         public double Temp { get; set; }
         public double Time { get; set; }
 
-        public TemperatureGraph(double Temperature) {
-            Temp = Temperature;
-            //Time = DateTime.Now;
-        }
         public TemperatureGraph(double Temperature, double Milliseconds) {
             Temp = Temperature;
             Time = Milliseconds;
