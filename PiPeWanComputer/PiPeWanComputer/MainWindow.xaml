@@ -7,20 +7,81 @@
         xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
-        Closing="Window_Closing">
+        MinHeight="450" MinWidth="800">
     <Grid>
-        <TextBox HorizontalAlignment="Left" TextWrapping="Wrap" Text="{Binding SerialData}"  Width="223" Margin="10,10,0,298"/>
-        <Wpf:CartesianChart Name="chtTemp" Margin="238,10,10,10">
-            <Wpf:CartesianChart.Series>
-                <Wpf:LineSeries Values="{Binding TempGraph}"/>
-            </Wpf:CartesianChart.Series>
-            <Wpf:CartesianChart.AxisX>
-                <Wpf:Axis Title="Time"/>
-            </Wpf:CartesianChart.AxisX>
-            <Wpf:CartesianChart.AxisY>
-                <Wpf:Axis Title="Temperature"/>
-            </Wpf:CartesianChart.AxisY>
-        </Wpf:CartesianChart>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="10,141,0,0" VerticalAlignment="Top"/>
+        <TabControl>
+            <TabControl.Resources>
+                <Style TargetType="{x:Type TabItem}">
+                    <Setter Property="HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <TextBlock FontWeight="Bold" Text="{Binding}"/>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Setter Property="Height" Value="30"/>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Header="Main">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width=".8*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+
+                    <Viewbox Grid.Column="0" Grid.Row="0" Grid.RowSpan="2">
+                        <Grid>
+                            <Label Content="Current Temp (F):" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="98"/>
+                            <TextBox HorizontalAlignment="Left" Margin="113,0,0,0" TextWrapping="Wrap" Text="{Binding Temp}" VerticalAlignment="Center" Height="26" Width="104" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                        </Grid>
+                    </Viewbox>
+
+                    <Viewbox Grid.Column="0" Grid.Row="2" Grid.RowSpan="2">
+                        <Grid>
+                            <Label Content="Flow Rate (L/H):" HorizontalAlignment="Left" Margin="10,0,0,0" VerticalAlignment="Center" Width="98"/>
+                            <TextBox HorizontalAlignment="Left" Margin="113,0,0,0" TextWrapping="Wrap" Text="{Binding Flow}" VerticalAlignment="Center" Height="26" Width="104" IsReadOnly="True" VerticalContentAlignment="Center" HorizontalContentAlignment="Left"/>
+                        </Grid>
+                    </Viewbox>
+
+                    <Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="0" Grid.RowSpan="2">
+                        <Wpf:CartesianChart Name="chtTemp" Margin="10">
+                            <Wpf:CartesianChart.Series>
+                                <Wpf:LineSeries Values="{Binding TempGraph}"/>
+                            </Wpf:CartesianChart.Series>
+                            <Wpf:CartesianChart.AxisX>
+                                <Wpf:Axis Title="Time (S)" MinValue="0"/>
+                            </Wpf:CartesianChart.AxisX>
+                            <Wpf:CartesianChart.AxisY>
+                                <Wpf:Axis Title="Temperature (F)" MinValue="-30" MaxValue="150"/>
+                            </Wpf:CartesianChart.AxisY>
+                        </Wpf:CartesianChart>
+                    </Grid>
+
+                    <Grid Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="2" Grid.RowSpan="2">
+                        <Wpf:CartesianChart x:Name="chtFlow" Margin="10" Grid.Column="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Row="2">
+                            <Wpf:CartesianChart.Series>
+                                <Wpf:LineSeries Values="{Binding FlowGraph}"/>
+                            </Wpf:CartesianChart.Series>
+                            <Wpf:CartesianChart.AxisX>
+                                <Wpf:Axis Title="Time (S)" MinValue="0"/>
+                            </Wpf:CartesianChart.AxisX>
+                            <Wpf:CartesianChart.AxisY>
+                                <Wpf:Axis Title="Flow (L/H)" MinValue="0" MaxValue="500"/>
+                            </Wpf:CartesianChart.AxisY>
+                        </Wpf:CartesianChart>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Mainteance">
+
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
