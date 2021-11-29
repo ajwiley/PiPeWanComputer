@@ -22,6 +22,7 @@ namespace PiPeWanComputer {
         private static BoundProperties _BoundProperties = new BoundProperties();
         private static DispatcherTimer GraphTimer = new DispatcherTimer();
         private DateTime StartTime = DateTime.Now;
+        private bool Connected = true;
 
         public MainWindow() {
             InitializeComponent();
@@ -36,6 +37,7 @@ namespace PiPeWanComputer {
             }
             catch {
                 MessageBox.Show("Could not connect to Arduino", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Connected = false;
             }
 
             try {
@@ -44,6 +46,7 @@ namespace PiPeWanComputer {
             }
             catch {
                 MessageBox.Show("Could not open the port", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Connected = false;
             }
 
             //Map backend values to the frontend for the temperature graph
@@ -57,7 +60,10 @@ namespace PiPeWanComputer {
             // When we close the program it closes faster vs a thread
             GraphTimer.Interval = TimeSpan.FromSeconds(5);
             GraphTimer.Tick += UpdateTempGraph;
-            GraphTimer.Start();
+
+            if (Connected) {
+                GraphTimer.Start();
+            }
         }
 
         /// <summary>
@@ -130,6 +136,39 @@ namespace PiPeWanComputer {
             }
 
             return "";
+        }
+
+        /// <summary>
+        /// Reconnect to the SparkFun
+        /// </summary>
+        private void btnReconnect(object sender, RoutedEventArgs e) {
+            _Port.Dispose();
+            Thread.Sleep(50);
+            Connected = true;
+
+            try {
+                _Port = new SerialPort() {
+                    PortName = ComPortNames("1B4F", "3ABA"),
+                    BaudRate = 9600
+                };
+            }
+            catch {
+                MessageBox.Show("Could not connect to Arduino", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Connected = false;
+            }
+
+            try {
+                _Port.DataReceived += NewSerialData;
+                _Port.Open();
+            }
+            catch {
+                MessageBox.Show("Could not open the port", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                Connected = false;
+            }
+
+            if (Connected) {
+                GraphTimer.Start();
+            }
         }
     }
 }
