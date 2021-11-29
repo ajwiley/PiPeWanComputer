@@ -4,20 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Net.Sockets;
 using System.IO.Ports;
 using System.Threading;
 using LiveCharts;
 using LiveCharts.Configurations;
 using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace PiPeWanComputer {
     /// <summary>
@@ -26,15 +18,12 @@ namespace PiPeWanComputer {
     public partial class MainWindow : Window {
         private static SerialPort _Port = new();
         private static BoundProperties _BoundProperties = new BoundProperties();
-        private Thread TempThread;
-        Stopwatch StopWatch = new();
-        bool RunGraph = true;
-        private DateTime start = DateTime.Now;
+        private static DispatcherTimer GraphTimer = new DispatcherTimer();
+        private DateTime StartTime = DateTime.Now;
 
         public MainWindow() {
             InitializeComponent();
             DataContext = _BoundProperties;
-
             _Port.Dispose();
 
             try {
@@ -55,35 +44,33 @@ namespace PiPeWanComputer {
                 MessageBox.Show("Could not open the port", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            //lets instead plot elapsed milliseconds and value
-            var mapper = Mappers.Xy<TemperatureGraph>().X(x => x.Time).Y(x => x.Temp);
-            //save the mapper globally         
-            Charting.For<TemperatureGraph>(mapper);
+            //Map backend values to the frontend for the temperature graph
+            var TempMapper = Mappers.Xy<TemperatureGraph>().X(x => x.Time).Y(x => x.Temp);
+            Charting.For<TemperatureGraph>(TempMapper);
 
-            TempThread = new Thread(UpdateTempGraph);
-            TempThread.Start();
+            //Map backend values to the frontend for the flow graph
+            var FlowMapper = Mappers.Xy<FlowGraph>().X(x => x.Time).Y(x => x.Flow);
+            Charting.For<FlowGraph>(FlowMapper);
+
+            GraphTimer.Interval = TimeSpan.FromSeconds(5);
+            GraphTimer.Tick += UpdateTempGraph;
+            GraphTimer.Start();
         }
 
         /// <summary>
         /// Update the temperature graph with the newest values
         /// </summary>
-        private void UpdateTempGraph() {
-            StopWatch.Start();
-            while (RunGraph) {
-                Thread.Sleep(1000);
-                double time = (DateTime.Now - start).TotalSeconds;
-                _BoundProperties.TempGraph.Add(new TemperatureGraph(_BoundProperties.Temperature, time));
-            }
-            StopWatch.Stop();
+        private void UpdateTempGraph(object? sender, EventArgs e) {
+            double CurrentTime = (DateTime.Now - StartTime).TotalSeconds;
+            _BoundProperties.TempGraph.Add(new TemperatureGraph(_BoundProperties.Temperature, CurrentTime));
+            _BoundProperties.FlowGraph.Add(new FlowGraph(_BoundProperties.FlowRate, CurrentTime));
         }
-
-        Func<double, string> formatFunc = (x) => String.Format("{0.00}", x);
 
         /// <summary>
         /// Serial 
         /// Receive data from the SparkFun Pro RF
         /// </summary>
-        private void NewSerialData(object sender, SerialDataReceivedEventArgs e) {
+        private static void NewSerialData(object sender, SerialDataReceivedEventArgs e) {
             Thread.Sleep(50);
             _BoundProperties.SerialData = _Port.ReadExisting(); // Read in the info
 
@@ -92,17 +79,7 @@ namespace PiPeWanComputer {
             double Temp = Convert.ToDouble(InfoSplit[0].Split(":")[1].Trim().Trim('F'));
             _BoundProperties.Temperature = Temp;
             double Flow = Convert.ToDouble(InfoSplit[1].Split(" ")[0]);
-
-            // Output the info
-            _BoundProperties.SerialData = "The temperature is: " + Temp + "F\n" + "The flow rate is: " + Flow + " L/H";
-        }
-
-        /// <summary>
-        /// Stop threads when closing the program
-        /// </summary>
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            RunGraph = false;
-            TempThread.Join();
+            _BoundProperties.FlowRate = Flow;
         }
     }
 }
