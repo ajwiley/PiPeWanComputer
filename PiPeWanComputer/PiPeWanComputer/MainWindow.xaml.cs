@@ -90,6 +90,13 @@ namespace PiPeWanComputer {
             double Temperature = Convert.ToDouble(InfoSplit[0].Trim());
             _BoundProperties.Temperature = Temperature;
 
+            if (_BoundProperties.Temperature <= 32) {
+                MessageInfo Message = new MessageInfo("Warning! The temperature is below 32 degrees!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Thread MessageThread = new Thread(() => AsyncMessageBox(Message));
+
+                MessageThread.Start();
+            }
+
             // Get the flow rate
             double Flow = Convert.ToDouble(InfoSplit[1].Trim());
             _BoundProperties.FlowRate = Flow;
@@ -169,6 +176,23 @@ namespace PiPeWanComputer {
             if (Connected) {
                 GraphTimer.Start();
             }
+        }
+
+        /// <summary>
+        /// Show a message box in a thread, this allows the MessageBox to be non-blocking<br/>
+        /// AKA let the robot continue running while waiting for the user to put the tray in the infeed
+        /// </summary>
+        private static void AsyncMessageBox(object m) {
+            MessageInfo Message = (MessageInfo)m;
+            MessageBox.Show(Message.Message, Message.Header, Message.Button, Message.Image);
+            Thread.CurrentThread.Join(100); // Exit the thread when it's done
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
+            _Port.DataReceived -= NewSerialData;
+            _Port.Close();
+            GraphTimer.Tick -= UpdateTempGraph;
+            GraphTimer.Stop();
         }
     }
 }
