@@ -5,13 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PiPeWanComputer {
-    public class FlowGraph {
+    public class FlowDatum {
         public double Flow { get; set; }
         public double Time { get; set; }
 
-        public FlowGraph(double Flow, double Milliseconds) {
-            this.Flow = Flow;
-            Time = Milliseconds;
+        public FlowDatum(double flow, double time) {
+            Flow = flow;
+            Time = time;
         }
     }
 }
