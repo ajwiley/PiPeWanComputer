@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PiPeWanComputer {
     public class FlowDatum {
-        public double Flow { get; set; }
-        public double Time { get; set; }
+        public double Flow { get; }
+        public double Time { get; }
 
         public FlowDatum(double flow, double time) {
             Flow = flow;

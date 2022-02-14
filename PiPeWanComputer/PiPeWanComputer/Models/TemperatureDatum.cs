@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace PiPeWanComputer {
     public class TemperatureDatum {
-        public double Temperature { get; set; }
-        public double Time { get; set; }
+        public double Temperature { get; }
+        public double Time { get; }
 
         public TemperatureDatum(double temperature, double time) {
             Temperature = temperature;

@@ -16,10 +16,9 @@ namespace PiPeWanComputer.Models
         private const string _SparkFun_VID = "1B4F";
         private const string _SparkFun_PID = "3ABA";
 
-        private SerialPort _Port;
+        private SerialPort? _Port;
         private bool _Connected;
         private System.Timers.Timer _TryConnect;
-        private SparkFunSerialData _PortData;
 
         private bool Connected
         {
@@ -34,19 +33,6 @@ namespace PiPeWanComputer.Models
             }
         }
 
-        private SparkFunSerialData PortData
-        {
-            get => _PortData;
-            set
-            {
-                if (_PortData != value)
-                {
-                    _PortData = value;
-                    PortDataChanged?.Invoke(this, new PortDataChangedEventArgs(value));
-                }
-            }
-        }
-
         public event EventHandler<ConnectionChangedEventArgs>? ConnectionChanged;
         public event EventHandler<PortDataChangedEventArgs>? PortDataChanged;
 
@@ -54,23 +40,21 @@ namespace PiPeWanComputer.Models
         {
             _TryConnect = new()
             {
-                AutoReset = true,
+                AutoReset = false,
                 Interval = 5000
             };
             _TryConnect.Elapsed += _TryConnect_Elapsed;
 
-            _Port = new SerialPort()
-            {
-                PortName = ComPortNames(_SparkFun_VID, _SparkFun_PID),
-                BaudRate = 9600
-            };
-
             try
             {
+                _Port = new SerialPort()
+                {
+                    PortName = ComPortNames(_SparkFun_VID, _SparkFun_PID),
+                    BaudRate = 9600
+                };
                 _Port.Open();
-                _Port.DataReceived += _Port_DataReceived;
-                _Port.ErrorReceived += _Port_ErrorReceived;
-                _Port.Disposed += _Port_Disposed;
+                _Port.DataReceived += Port_DataReceived;
+                _Port.ErrorReceived += Port_ErrorReceived;
                 Connected = true;
             }
             catch
@@ -82,50 +66,42 @@ namespace PiPeWanComputer.Models
 
         private void _TryConnect_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            if (Connected) { return; }
-
-            _Port.Dispose();
-
-            _Port = new SerialPort()
-            {
-                PortName = ComPortNames(_SparkFun_VID, _SparkFun_PID),
-                BaudRate = 9600
-            };
+            _Port?.Dispose();
 
             try
             {
+                _Port = new SerialPort()
+                {
+                    PortName = ComPortNames(_SparkFun_VID, _SparkFun_PID),
+                    BaudRate = 9600
+                };
                 _Port.Open();
-                _TryConnect.Stop();
-                _Port.DataReceived += _Port_DataReceived;
-                _Port.ErrorReceived += _Port_ErrorReceived;
-                _Port.Disposed += _Port_Disposed;
+                _Port.DataReceived += Port_DataReceived;
+                _Port.ErrorReceived += Port_ErrorReceived;
                 Connected = true;
             }
             catch
             {
+                _TryConnect.Start();
+                Connected = false;
             }
         }
 
-        private void _Port_Disposed(object? sender, EventArgs e)
+        private void Port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
         {
-            // Goodbye ;(
-        }
-
-        private void _Port_ErrorReceived(object sender, SerialErrorReceivedEventArgs e)
-        {
+            Connected = false;
             if (_TryConnect.Enabled == false)
             {
-                Connected = false;
                 _TryConnect.Start();
             }
         }
 
-        private void _Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             // Wait arbitrary time for the full message to arrive in the serial buffer
             Thread.Sleep(50);
-
-            string? serialData = _Port.ReadExisting();
+            
+            string? serialData = _Port?.ReadExisting();
 
             if (String.IsNullOrEmpty(serialData)) { return; }
 
@@ -138,7 +114,8 @@ namespace PiPeWanComputer.Models
                 // Get the flow
                 if (double.TryParse(infoSplit[1].Trim(), out double flow))
                 {
-                    PortData = new SparkFunSerialData(temperature, flow);
+                    var portData = new SparkFunSerialData(temperature, flow);
+                    PortDataChanged?.Invoke(this, new PortDataChangedEventArgs(portData));
                 }
             }
         }
@@ -195,8 +172,8 @@ namespace PiPeWanComputer.Models
 
         public void Dispose()
         {
-            _TryConnect.Dispose();
-            _Port.Dispose();
+            _TryConnect?.Dispose();
+            _Port?.Dispose();
         }
     }
 

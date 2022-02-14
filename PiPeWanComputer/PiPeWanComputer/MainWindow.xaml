@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:PiPeWanComputer"
         xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
         xmlns:views="clr-namespace:PiPeWanComputer.Views" 
-        xmlns:viewmodels="clr-namespace:PiPeWanComputer.ViewModels"
+        xmlns:viewmodels="clr-namespace:PiPeWanComputer.ViewModels" 
+        d:DataContext="{d:DesignInstance Type=viewmodels:MainWindowViewModel}"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         MinHeight="450" MinWidth="800"
@@ -33,7 +34,7 @@
                         <RowDefinition Height="1*"/>
                     </Grid.RowDefinitions>
 
-                    <Grid DataContext="{Binding TempGraphViewModelInst}">
+                    <Grid DataContext="{Binding TempGraphViewModel}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
                             <ColumnDefinition Width="100"/>
@@ -44,10 +45,10 @@
                                 <Wpf:LineSeries Values="{Binding TempGraph}"/>
                             </Wpf:CartesianChart.Series>
                             <Wpf:CartesianChart.AxisX>
-                                <Wpf:Axis Title="Time (seconds)" MinValue="0" MaxValue="{Binding MaxTime}"/>
+                                <Wpf:Axis Title="Time (seconds)" MinValue="0" MaxValue="10"/>
                             </Wpf:CartesianChart.AxisX>
                             <Wpf:CartesianChart.AxisY>
-                                <Wpf:Axis Title="Temperature (F)" MinValue="{Binding MinTemp}" MaxValue="{Binding MaxTemp}"/>
+                                <Wpf:Axis Title="Temperature (F)" MinValue="{Binding MinTemperature}" MaxValue="{Binding MaxTemperature}"/>
                             </Wpf:CartesianChart.AxisY>
                         </Wpf:CartesianChart>
 
@@ -56,28 +57,32 @@
                             <Label Content="{Binding CurrentTemp}" VerticalAlignment="Center" FontSize="30"/>
                             <Button Content="Zoom In"/>
                         </StackPanel>
-
+                        
                     </Grid>
 
-                    <Grid Grid.Row="1" DataContext="{Binding FlowGraphViewModelInst}">
+                    <Grid Grid.Row="1" DataContext="{Binding FlowGraphViewModel}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="100"/>
                         </Grid.ColumnDefinitions>
 
-                        <Wpf:CartesianChart>
+                        <Wpf:CartesianChart Width="700">
                             <Wpf:CartesianChart.Series>
                                 <Wpf:LineSeries Values="{Binding FlowGraph}"/>
                             </Wpf:CartesianChart.Series>
                             <Wpf:CartesianChart.AxisX>
-                                <Wpf:Axis Title="Time (seconds)" MinValue="0" MaxValue="{Binding MaxTime}"/>
+                                <Wpf:Axis Title="Time (seconds)" MinValue="0" MaxValue="10"/>
                             </Wpf:CartesianChart.AxisX>
                             <Wpf:CartesianChart.AxisY>
-                                <Wpf:Axis Title="Temperature (F)" MinValue="{Binding MinFlow}" MaxValue="{Binding MaxFlow}"/>
+                                <Wpf:Axis Title="Flow (ml/s)" MinValue="{Binding MinFlow}" MaxValue="{Binding MaxFlow}"/>
                             </Wpf:CartesianChart.AxisY>
                         </Wpf:CartesianChart>
-
-                        <Label Grid.Column="1" Content="{Binding CurrentFlow}" VerticalAlignment="Center" FontSize="30"/>
+                        <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                            <Button Content="Zoom Out"/>
+                            <Label  Content="{Binding CurrentFlow}" VerticalAlignment="Center" FontSize="30"/>
+                            <Button Content="Zoom In"/>
+                        </StackPanel>
+                        
                     </Grid>
                 </Grid>
             </TabItem>
@@ -95,7 +100,7 @@
                     </Grid.RowDefinitions>
                     <Viewbox>
                         <Grid>
-                            <Button Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Height="112" Width="245" Margin="10" Command="{Binding Connect}" Click="btnReconnect"/>
+                            <Button Content="Connect" HorizontalAlignment="Center" VerticalAlignment="Center" Height="112" Width="245" Margin="10" Command="{Binding Connect}"/>
                         </Grid>
                     </Viewbox>
                 </Grid>
