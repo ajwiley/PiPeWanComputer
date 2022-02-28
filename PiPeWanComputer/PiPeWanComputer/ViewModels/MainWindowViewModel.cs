@@ -1,4 +1,5 @@
 ﻿using LiveCharts;
+using LiveCharts.Defaults;
 using PiPeWanComputer.Models;
 using System;
 using System.Collections.Generic;
@@ -6,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows;
 
 namespace PiPeWanComputer.ViewModels
 {
@@ -13,26 +15,25 @@ namespace PiPeWanComputer.ViewModels
     {
         private DateTime? _StartTime;
         private readonly Arduino _Arduino;
-        private readonly Timer _ClearTimer;
+        private readonly Timer _ConnectionLostTimer;
         private readonly Timer MockArduino;
 
         public MainWindowViewModel()
         {
-            _ClearTimer = new Timer()
+            _ConnectionLostTimer = new Timer()
             {
                 AutoReset = false,
                 Interval = 120000
             };
-            _ClearTimer.Elapsed += (obj, e) =>
+            _ConnectionLostTimer.Elapsed += (obj, e) =>
             {
-                TempGraphViewModel?.TempGraph.Clear();
-                FlowGraphViewModel?.FlowGraph.Clear();
+                MessageBox.Show("Lost connection to Node");
             };
 
             _Arduino = new();
             _StartTime = null;
-            TempGraphViewModel = new();
-            FlowGraphViewModel = new();
+            TemperatureChartViewModel = new("Temperature");
+            FlowChartViewModel = new("Flow");
 
             _Arduino.PortDataChanged += (obj, e) =>
             {
@@ -42,25 +43,26 @@ namespace PiPeWanComputer.ViewModels
 
                 var currentTime = (TimeSpan)(data.Time - _StartTime);
 
-                TempGraphViewModel.NextPoint = new TemperatureDatum(data.Temperature, currentTime.TotalSeconds);
+                TemperatureChartViewModel.NextPoint = new ObservablePoint(data.Temperature, currentTime.TotalSeconds);
 
-                FlowGraphViewModel.NextPoint =  new FlowDatum(data.Flow, currentTime.TotalSeconds);
+                FlowChartViewModel.NextPoint =  new ObservablePoint(data.Flow, currentTime.TotalSeconds);
             };
-
             _Arduino.ConnectionChanged += (obj, e) =>
             {
-                var connected = e.IsConnected.ToString();
-                if (connected == "False" && !_ClearTimer.Enabled)
+                bool connected = e.Connected;
+
+                if (!connected && !_ConnectionLostTimer.Enabled)
                 {
-                    _ClearTimer.Start();
+                    _ConnectionLostTimer.Start();
                 }
-                else if (connected == "True" && _ClearTimer.Enabled)
+                else if (connected && _ConnectionLostTimer.Enabled)
                 {
-                    _ClearTimer.Stop();
+                    _ConnectionLostTimer.Stop();
                 }
             };
 
-
+            // Testing Purposes Only
+            //_Arduino.Start();
             MockArduino = new Timer()
             {
                 AutoReset = true,
@@ -78,18 +80,16 @@ namespace PiPeWanComputer.ViewModels
 
                 var currentTime = (TimeSpan)(DateTime.Now - _StartTime);
 
-                TempGraphViewModel.NextPoint = new TemperatureDatum(mockData.Temperature, currentTime.TotalSeconds);
+                TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, mockData.Temperature);
 
-                FlowGraphViewModel.NextPoint = new FlowDatum(mockData.Flow, currentTime.TotalSeconds);
+                FlowChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, mockData.Flow);
             };
             MockArduino.Start();
         }
 
         #region ViewModels
-
-        public TempGraphViewModel TempGraphViewModel { get; }
-        public FlowGraphViewModel FlowGraphViewModel { get; }
-
+        public ChartViewModel TemperatureChartViewModel { get; }
+        public ChartViewModel FlowChartViewModel { get; }
         #endregion
 
         public void Dispose()

@@ -20,17 +20,17 @@ namespace PiPeWanComputer {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        private readonly MainWindowViewModel _MainWindowViewModel;
+        public MainWindowViewModel MainWindowViewModel { get; }
 
         public MainWindow() {
             InitializeComponent();
-            _MainWindowViewModel = new();
-            DataContext = _MainWindowViewModel;
+            MainWindowViewModel = new();
+            DataContext = MainWindowViewModel;
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            _MainWindowViewModel.Dispose();
+            MainWindowViewModel.Dispose();
         }
     }
 }

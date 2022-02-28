@@ -1,0 +1,56 @@
+﻿<UserControl x:Class="PiPeWanComputer.Views.ChartView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
+             xmlns:viewmodels="clr-namespace:PiPeWanComputer.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ChartViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            <StackPanel.Resources>
+                <!--This style binds all these buttons to the same command. To tell which button was pressed, the Command Parameter is set to the button itself.-->
+                <Style TargetType="Button">
+                    <Setter Property="Command" Value="{Binding UpdateChartRange}"/>
+                    <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
+                    <Setter Property="Width" Value="50"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="All"/>
+            <Button Content="YTD"/>
+            <Button Content="Month"/>
+            <Button Content="Week"/>
+            <Button Content="Day"/>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <!--Figure out how to adjust the grid lines and values based on the range.-->
+            <!--i.e. if the X-Axis spans 5 seconds each lines should be a second, but if it spans multiple days, a gridline should represent hours etc-->
+            <Wpf:CartesianChart>
+                <Wpf:CartesianChart.Series>
+                    <Wpf:LineSeries Values="{Binding ChartValues}"/>
+                </Wpf:CartesianChart.Series>
+                <Wpf:CartesianChart.AxisX>
+                    <Wpf:Axis Title="{Binding XAxisTitle}"/>
+                </Wpf:CartesianChart.AxisX>
+                <Wpf:CartesianChart.AxisY>
+                    <Wpf:Axis Title="{Binding YAxisTitle}"/>
+                </Wpf:CartesianChart.AxisY>
+            </Wpf:CartesianChart>
+
+            <Label Grid.Column="1" Content="{Binding CurrentY}" VerticalAlignment="Center" FontSize="30"/>
+        </Grid>
+    </Grid>
+</UserControl>
