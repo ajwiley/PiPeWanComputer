@@ -14,7 +14,15 @@
   <ItemGroup>
     <PackageReference Include="LiveCharts" Version="0.9.7" />
     <PackageReference Include="LiveCharts.Wpf" Version="0.9.7" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
     <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="SQL Stuff\Procedures\DELETE\" />
+    <Folder Include="SQL Stuff\Procedures\INSERT\" />
+    <Folder Include="SQL Stuff\Procedures\UPDATE\" />
+    <Folder Include="SQL Stuff\Procedures\SELECT\" />
   </ItemGroup>
 
 </Project>

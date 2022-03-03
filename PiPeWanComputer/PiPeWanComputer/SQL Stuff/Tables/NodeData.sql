@@ -1,0 +1,10 @@
+﻿CREATE TABLE dbo.NodeData
+(
+	NodeID INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+	Battery FLOAT NOT NULL DEFAULT 0.0,
+	Temperature FLOAT NOT NULL DEFAULT 0.0,
+	Flow FLOAT NOT NULL DEFAULT 0.0,
+	[Status] NVARCHAR(128) NOT NULL DEFAULT 'Waiting',
+
+	CONSTRAINT FK_NodeData_NodeID foreign key (NodeID) references Node(NodeID)
+)
