@@ -32,8 +32,8 @@ namespace PiPeWanComputer.ViewModels
 
             _Arduino = new();
             _StartTime = null;
-            TemperatureChartViewModel = new("Temperature");
-            FlowChartViewModel = new("Flow");
+            TemperatureChartViewModel = new(Type.Temperature);
+            FlowChartViewModel = new(Type.Flow);
 
             _Arduino.PortDataChanged += (obj, e) =>
             {

@@ -13,6 +13,11 @@ namespace PiPeWanComputer.ViewModels
     /// </summary>
     public abstract class ViewModelBase : INotifyPropertyChanged
     {
+        public enum Type {
+            Temperature,
+            Flow
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = "")

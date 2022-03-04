@@ -41,11 +41,11 @@ namespace PiPeWanComputer.ViewModels {
 
         public ICommand UpdateChartRange { get; private set; }
 
-        public ChartViewModel(string type) {
-            if(type == "Temperature") {
+        public ChartViewModel(Type type) {
+            if(type.Equals(Type.Temperature)) {
                 YAxisTitle = "Temperature (F)";
             }
-            else {
+            else if (type.Equals(Type.Flow)) {
                 YAxisTitle = "Flow (ml/hr)";
             }
 
