@@ -34,6 +34,7 @@ namespace PiPeWanComputer.ViewModels
             _StartTime = null;
             TemperatureChartViewModel = new(Type.Temperature);
             FlowChartViewModel = new(Type.Flow);
+            RegistrationViewModel = new();
 
             _Arduino.PortDataChanged += (obj, e) =>
             {
@@ -90,6 +91,7 @@ namespace PiPeWanComputer.ViewModels
         #region ViewModels
         public ChartViewModel TemperatureChartViewModel { get; }
         public ChartViewModel FlowChartViewModel { get; }
+        public RegistrationViewModel RegistrationViewModel { get; }
         #endregion
 
         public void Dispose()

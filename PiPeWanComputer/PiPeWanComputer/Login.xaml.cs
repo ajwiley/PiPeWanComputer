@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
+using PiPeWanComputer.Views;
+
 namespace PiPeWanComputer
 {
     /// <summary>

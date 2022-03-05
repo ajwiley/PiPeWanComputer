@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
 
-namespace PiPeWanComputer
+namespace PiPeWanComputer.Views
 {
     /// <summary>
     /// Interaction logic for Registration.xaml
