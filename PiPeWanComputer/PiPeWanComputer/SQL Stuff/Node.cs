@@ -101,34 +101,34 @@ namespace PiPeWanComputer.SQL_Stuff {
             }
         }
 
-        /// <summary>
-        /// This will return a list of the carts
-        /// </summary>
-        /// <param name="cartID">If you want to just return a specific cart, by default 0 to return all</param>
-        /// <returns></returns>
-        public List<Cart> ListOfCarts(int cartID = 0) {
-            using (SqlConnection connect = new SqlConnection(Connection)) {
-                using (SqlCommand command = new SqlCommand("[dbo].SelectCarts", connect)) {
-                    command.CommandType = CommandType.StoredProcedure;
+        ///// <summary>
+        ///// This will return a list of the carts
+        ///// </summary>
+        ///// <param name="cartID">If you want to just return a specific cart, by default 0 to return all</param>
+        ///// <returns></returns>
+        //public List<Cart> ListOfCarts(int cartID = 0) {
+        //    using (SqlConnection connect = new SqlConnection(Connection)) {
+        //        using (SqlCommand command = new SqlCommand("[dbo].SelectCarts", connect)) {
+        //            command.CommandType = CommandType.StoredProcedure;
 
-                    command.Parameters.Add("CartID", SqlDbType.Int).Value = cartID;
+        //            command.Parameters.Add("CartID", SqlDbType.Int).Value = cartID;
 
-                    connect.Open();
+        //            connect.Open();
 
-                    SqlDataReader reader = command.ExecuteReader();
+        //            SqlDataReader reader = command.ExecuteReader();
 
-                    List<Cart> carts = new List<Cart>();
+        //            List<Cart> carts = new List<Cart>();
 
-                    while (reader.Read()) {
-                        carts.Add(new Cart(
-                            (int)reader["CartID"],
-                            (int)reader["Barcode"],
-                            (string)reader["CartName"]));
-                    }
+        //            while (reader.Read()) {
+        //                carts.Add(new Cart(
+        //                    (int)reader["CartID"],
+        //                    (int)reader["Barcode"],
+        //                    (string)reader["CartName"]));
+        //            }
 
-                    return carts;
-                }
-            }
-        }
+        //            return carts;
+        //        }
+        //    }
+        //}
     }
 }
