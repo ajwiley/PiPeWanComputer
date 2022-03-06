@@ -8,6 +8,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="LoRaWan.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Include="..\.editorconfig" Link=".editorconfig" />
   </ItemGroup>
 
@@ -24,6 +28,10 @@
     <Folder Include="SQL Stuff\Procedures\INSERT\" />
     <Folder Include="SQL Stuff\Procedures\UPDATE\" />
     <Folder Include="SQL Stuff\Procedures\SELECT\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <SplashScreen Include="LoRaWan.png" />
   </ItemGroup>
 
 </Project>
