@@ -5,23 +5,27 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace PiPeWanComputer.SQL_Stuff {
-    public class NodeData : BaseConnection{
-        public float Battery;
-        public float Temperature;
-        public float Flow;
-        public NodeStatus Status;
+    public enum NodeStatus {
+        DEFAULT = -1,
+        DISCONNECTED,
+        IDLE,
+        RUNNING,
+        PAUSED
+    }
 
-        public NodeData(float battery, float temperature, float flow, NodeStatus status) {
+    public class NodeData : BaseConnection{
+        public int NodeID { get; }
+        public float Battery { get; }
+        public float Temperature { get; }
+        public float Flow { get; }
+        public NodeStatus Status { get; }
+
+        public NodeData(int nodeID, float battery = 0f, float temperature = 0f, float flow = 0f, NodeStatus status = NodeStatus.IDLE) {
+            NodeID = nodeID;
             Battery = battery;
             Temperature = temperature;
             Flow = flow;
             Status = status;
         }
     }
-}
-
-public enum NodeStatus {
-    IDLE,
-    RUNNING,
-    PAUSED
 }

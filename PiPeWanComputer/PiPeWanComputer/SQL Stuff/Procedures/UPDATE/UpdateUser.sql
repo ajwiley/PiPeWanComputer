@@ -3,23 +3,13 @@ USE PipeWan;
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[UpdateUser]
-	@UserID INT,
-	@PasswordHash BINARY(64),
-	@UserName NVARCHAR(128)
+	@UserName NVARCHAR(15),
+	@PasswordHash BINARY(64) = 0x00,
+	@AccessLevel INT = -1
 AS 
 
-IF NOT EXISTS (SELECT * FROM [User] WHERE [PasswordHash] = @PasswordHash)
-BEGIN
-	Update [User]
+UPDATE [UpdateUser]
 	SET
-		PasswordHash = @PasswordHash
-	WHERE [UserID] = @UserID
-END
-
-IF NOT EXISTS (SELECT * FROM [User] WHERE [UserName] = @UserName)
-BEGIN
-	Update [User]
-	SET
-		[UserName] = @UserName
-	WHERE [UserID] = @UserID
-END
+		[PasswordHash] = IFF(@PasswordHash > 0x00, [PasswordHash], @PasswordHash),
+		[AccessLevel] = IFF(@AccessLevel > -1, [AccessLevel], @PasswordHash)
+	WHERE [UserName] = @UserName

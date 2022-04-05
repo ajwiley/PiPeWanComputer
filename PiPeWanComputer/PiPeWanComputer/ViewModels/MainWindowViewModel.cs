@@ -67,7 +67,7 @@ namespace PiPeWanComputer.ViewModels
             MockArduino = new Timer()
             {
                 AutoReset = true,
-                Interval = 500
+                Interval = 1000
             };
             MockArduino.Elapsed += (obj, e) =>
             {

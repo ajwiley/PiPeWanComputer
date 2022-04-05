@@ -17,6 +17,7 @@ namespace PiPeWanComputer.ViewModels {
         double _MinY;
         double _MaxY;
         string _Current;
+        string _LastClicked;
         #endregion
 
         #region Public Properties
@@ -29,7 +30,8 @@ namespace PiPeWanComputer.ViewModels {
         public double MinY { get => _MinY; set => SetProperty(ref _MinY, value); }
         public double MaxY { get => _MaxY; set => SetProperty(ref _MaxY, value); }
         public string CurrentY { get => _Current; set => SetProperty(ref _Current, value); }
-        public ObservablePoint NextPoint {
+        public ObservablePoint NextPoint
+        {
             set {
                 ChartValues.Add(value);
                 CurrentY = value.Y.ToString("F2");
@@ -41,11 +43,14 @@ namespace PiPeWanComputer.ViewModels {
 
         public ICommand UpdateChartRange { get; private set; }
 
-        public ChartViewModel(Type type) {
-            if(type.Equals(Type.Temperature)) {
+        public ChartViewModel(Type type)
+        {
+            if (type.Equals(Type.Temperature))
+            {
                 YAxisTitle = "Temperature (F)";
             }
-            else if (type.Equals(Type.Flow)) {
+            else if (type.Equals(Type.Flow))
+            {
                 YAxisTitle = "Flow (ml/hr)";
             }
 
@@ -53,12 +58,14 @@ namespace PiPeWanComputer.ViewModels {
             _Current = "0";
             _MinY = 0;
             _MaxY = 1;
+            _LastClicked = "";
             _ChartValues = new();
 
             // Using constructor without canExecute because I want it to always be true (and therefore the buttons always enabled).
             // Defining an anonymous action parameter because this code won't be used anywhere else.
             UpdateChartRange = new RelayCommand(obj => {
-                switch (obj as string) {
+                switch (obj as string)
+                {
                     case "All":
                         // TODO set Min to the oldest record
                         break;
@@ -78,7 +85,39 @@ namespace PiPeWanComputer.ViewModels {
             });
 
             // TODO: Create a CanExecute function which returns false if the same button was the last one selected
-            //UpdateChartRange = new RelayCommand(UpdateChartRange_Execute, UpdateChartRange_CanExecute);
+            UpdateChartRange = new RelayCommand(UpdateChartRange_Execute, UpdateChartRange_CanExecute);
+        }
+
+        private bool UpdateChartRange_CanExecute(object obj)
+        {
+            return obj as string != _LastClicked;
+        }
+
+        private void UpdateChartRange_Execute(object obj)
+        {
+            string content = obj as string;
+            if (content != null)
+            {
+                _LastClicked = content;
+                switch (content)
+                {
+                    case "All":
+                        // TODO set Min to the oldest record
+                        break;
+                    case "YTD":
+                        Console.WriteLine("YTD");
+                        break;
+                    case "Month":
+                        Console.WriteLine("Month");
+                        break;
+                    case "Week":
+                        Console.WriteLine("Week");
+                        break;
+                    case "Day":
+                        Console.WriteLine("Day");
+                        break;
+                }
+            }
         }
     }
 }

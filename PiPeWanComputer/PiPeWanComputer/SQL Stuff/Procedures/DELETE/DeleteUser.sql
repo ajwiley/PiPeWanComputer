@@ -3,10 +3,10 @@ USE PipeWan;
 GO
 
 CREATE OR ALTER PROCEDURE [dbo].[DeleteUser]
-	@UserID INT = 0
+	@UserName NVARCHAR(128) = ''
 AS 
 
 DELETE
 FROM [User]
-WHERE [UserID] = @UserID
+WHERE [UserName] = @UserName
 

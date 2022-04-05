@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using Microsoft.Win32;
 using PiPeWanComputer.ViewModels;
 using PiPeWanComputer.Models;
+using PiPeWanComputer.SQL_Stuff;
 
 namespace PiPeWanComputer {
     /// <summary>
@@ -26,6 +27,7 @@ namespace PiPeWanComputer {
             InitializeComponent();
             MainWindowViewModel = new();
             DataContext = MainWindowViewModel;
+            PipeDB.CreateDB();
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)

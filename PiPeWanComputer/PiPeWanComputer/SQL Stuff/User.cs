@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 
 namespace PiPeWanComputer.SQL_Stuff {
     public class User : BaseConnection {
-        public string UserName;
-        public byte[] PasswordHash;
+        public string UserName { get; }
+        public byte[] PasswordHash { get; }
+        public int AccessLevel { get; }
 
-        public User(string userName, byte[] passwordHash) {
+        public User(string username) : this(username, Array.Empty<byte>()) { }
+        public User(string userName, byte[] passwordHash, int accessLevel = 0) {
             UserName = userName;
             PasswordHash = passwordHash;
+            AccessLevel = accessLevel;
         }
     }
 }
