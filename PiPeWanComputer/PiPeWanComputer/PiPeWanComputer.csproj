@@ -24,13 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="SQL Stuff\Procedures\DELETE\" />
-    <Folder Include="SQL Stuff\Procedures\INSERT\" />
-    <Folder Include="SQL Stuff\Procedures\UPDATE\" />
-    <Folder Include="SQL Stuff\Procedures\SELECT\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <SplashScreen Include="LoRaWan.png" />
   </ItemGroup>
 

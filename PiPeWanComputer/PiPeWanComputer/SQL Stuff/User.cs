@@ -10,7 +10,6 @@ namespace PiPeWanComputer.SQL_Stuff {
         public byte[] PasswordHash { get; }
         public int AccessLevel { get; }
 
-        public User(string username) : this(username, Array.Empty<byte>()) { }
         public User(string userName, byte[] passwordHash, int accessLevel = 0) {
             UserName = userName;
             PasswordHash = passwordHash;

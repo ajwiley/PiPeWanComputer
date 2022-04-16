@@ -14,10 +14,9 @@ namespace PiPeWanComputer.SQL_Stuff {
         public string NodeName { get; }
         public string IPAddress { get; }
         public string LocationName { get; }
-        DateTime? LastUpdated { get; }
+        public DateTime? LastUpdated { get; }
 
-        public Node(int nodeID) : this(nodeID, "", "") { }
-        public Node(int nodeID, string nodeName, string ipAddress, string locationName = "", DateTime? lastUpdated = null) {
+        public Node(int nodeID, string ipAddress, string nodeName = "", string locationName = "", DateTime? lastUpdated = null) {
             NodeID = nodeID;
             NodeName = nodeName;
             IPAddress = ipAddress;

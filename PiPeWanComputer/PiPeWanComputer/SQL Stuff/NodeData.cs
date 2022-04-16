@@ -20,7 +20,7 @@ namespace PiPeWanComputer.SQL_Stuff {
         public float Flow { get; }
         public NodeStatus Status { get; }
 
-        public NodeData(int nodeID, float battery = 0f, float temperature = 0f, float flow = 0f, NodeStatus status = NodeStatus.IDLE) {
+        public NodeData(int nodeID, float battery, float temperature, float flow, NodeStatus status = NodeStatus.IDLE) {
             NodeID = nodeID;
             Battery = battery;
             Temperature = temperature;
