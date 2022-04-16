@@ -4,12 +4,12 @@ GO
 
 CREATE OR ALTER PROCEDURE [dbo].[UpdateUser]
 	@UserName NVARCHAR(15),
-	@PasswordHash BINARY(64) = 0x00,
-	@AccessLevel INT = -1
+	@PasswordHash BINARY(64) = NULL,
+	@AccessLevel INT = NULL
 AS 
 
-UPDATE [UpdateUser]
+UPDATE [User]
 	SET
-		[PasswordHash] = IFF(@PasswordHash > 0x00, [PasswordHash], @PasswordHash),
-		[AccessLevel] = IFF(@AccessLevel > -1, [AccessLevel], @PasswordHash)
+		[PasswordHash] = CASE WHEN @PasswordHash IS NOT NULL THEN @PasswordHash ELSE [PasswordHash] END,
+		[AccessLevel] = CASE WHEN @AccessLevel IS NOT NULL THEN @AccessLevel ELSE [AccessLevel] END
 	WHERE [UserName] = @UserName
