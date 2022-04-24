@@ -300,8 +300,7 @@ namespace PiPeWanComputer.SQL_Stuff {
                     (int)reader["NodeID"],
                     (string)reader["NodeName"],
                     (string)reader["IPAddress"],
-                    (string)reader["LocationName"],
-                    (DateTime)reader["LastUpdated"]);
+                    (string)reader["LocationName"]);
             }
 
             return null;
@@ -324,8 +323,7 @@ namespace PiPeWanComputer.SQL_Stuff {
                         (int)reader["NodeID"],
                         (string)reader["NodeName"],
                         (string)reader["IPAddress"],
-                        (string)reader["LocationName"],
-                        (DateTime)reader["LastUpdated"]));
+                        (string)reader["LocationName"]));
             }
 
             return nodes;

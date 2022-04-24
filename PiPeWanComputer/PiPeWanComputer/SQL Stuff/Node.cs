@@ -14,14 +14,12 @@ namespace PiPeWanComputer.SQL_Stuff {
         public string NodeName { get; }
         public string IPAddress { get; }
         public string LocationName { get; }
-        public DateTime? LastUpdated { get; }
 
-        public Node(int nodeID, string ipAddress, string nodeName = "", string locationName = "", DateTime? lastUpdated = null) {
+        public Node(int nodeID, string ipAddress, string nodeName = "", string locationName = "") {
             NodeID = nodeID;
             NodeName = nodeName;
             IPAddress = ipAddress;
             LocationName = locationName;
-            LastUpdated = lastUpdated;
         }
     }
 }
