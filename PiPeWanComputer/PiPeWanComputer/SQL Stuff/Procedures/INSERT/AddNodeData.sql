@@ -7,7 +7,7 @@ CREATE OR ALTER PROCEDURE [dbo].[AddNodeData]
 	@Battery FLOAT = 0.0,
 	@Temperature FLOAT = 0.0,
 	@Flow FLOAT = 0.0,
-	@Status NVARCHAR = 'IDLE'
+	@Status NVARCHAR(128) = 'IDLE'
 AS 
 
 IF EXISTS (SELECT * FROM [Node] WHERE [NodeID] = @NodeID)
