@@ -94,6 +94,15 @@ namespace PiPeWanComputer.SQL_Stuff {
             RunSqlScriptFile(Procedures + @"SELECT\SelectUser.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNode.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNodeData.sql");
+
+            // Now that some nodes exist and we have procedures created to find them, we can use their NodeID's to generate Mock NodeData
+            var NodeIDs = new List<int>();
+            var nodes = PipeDB.SelectAllNodes();
+            nodes.ForEach(node => { NodeIDs.Add(node.NodeID); });
+            var rand = new Random();
+            foreach (var id in NodeIDs) {
+                PipeDB.AddNodeData(id, (float)rand.NextDouble(), (float)rand.NextDouble()*100, (float)rand.NextDouble()*10, NodeStatus.RUNNING);
+            }
         }
 
         /// <summary>
@@ -141,9 +150,8 @@ namespace PiPeWanComputer.SQL_Stuff {
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.Add("UserName", SqlDbType.NVarChar).Value = user.UserName;
-            command.Parameters.Add("PasswordHash", SqlDbType.Binary, (64)).Value = user.PasswordHash;
-            //command.Parameters.Add("AccessLevel", SqlDbType.Int).Value = user.AccessLevel;
-            command.Parameters.Add("AccessLevel", SqlDbType.Int).Value = null;
+            command.Parameters.Add("PasswordHash", SqlDbType.Binary, 64).Value = user.PasswordHash;
+            command.Parameters.Add("AccessLevel", SqlDbType.Int).Value = user.AccessLevel;
 
             connect.Open();
 
@@ -178,13 +186,14 @@ namespace PiPeWanComputer.SQL_Stuff {
         public static void AddNodeData(NodeData nodeData) {
             using var scope = new TransactionScope();
             using var connect = new SqlConnection(ConnectionString);
-            using var command = new SqlCommand("[dbo].AddNode", connect);
+            using var command = new SqlCommand("[dbo].AddNodeData", connect);
             command.CommandType = CommandType.StoredProcedure;
 
+            command.Parameters.Add("NodeID", SqlDbType.Int).Value = nodeData.NodeID;
             command.Parameters.Add("Battery", SqlDbType.Float).Value = nodeData.Battery;
-            command.Parameters.Add("Temperature", SqlDbType.NVarChar).Value = nodeData.Temperature;
-            command.Parameters.Add("Flow", SqlDbType.NVarChar).Value = nodeData.Flow;
-            command.Parameters.Add("Status", SqlDbType.NVarChar).Value = nodeData.Status;
+            command.Parameters.Add("Temperature", SqlDbType.Float).Value = nodeData.Temperature;
+            command.Parameters.Add("Flow", SqlDbType.Float).Value = nodeData.Flow;
+            command.Parameters.Add("Status", SqlDbType.NVarChar, 128).Value = nodeData.Status.ToString();
 
             connect.Open();
 
@@ -309,10 +318,10 @@ namespace PiPeWanComputer.SQL_Stuff {
             var nodes = new List<Node>();
 
             using var connect = new SqlConnection(ConnectionString);
-            using var command = new SqlCommand("[dbo].SelectNodes", connect);
+            using var command = new SqlCommand("[dbo].SelectNode", connect);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.Add("NodeID", SqlDbType.Int).Value = "";
+            command.Parameters.Add("NodeID", SqlDbType.Int).Value = -1;
 
             connect.Open();
 
@@ -329,32 +338,39 @@ namespace PiPeWanComputer.SQL_Stuff {
             return nodes;
         }
 
-        public static List<NodeData> SelectNodeData(int nodeID) {
+        public static List<NodeData> SelectNodeData(int? nodeID, DateTime? StartDate = null, DateTime? EndTime = null) {
             var NodeDatas = new List<NodeData>();
 
             using var connect = new SqlConnection(ConnectionString);
-            using var command = new SqlCommand("[dbo].SelectNodeDatas", connect);
+            using var command = new SqlCommand("[dbo].SelectNodeData", connect);
             command.CommandType = CommandType.StoredProcedure;
 
             command.Parameters.Add("NodeID", SqlDbType.Int).Value = nodeID;
+            command.Parameters.Add("StartDate", SqlDbType.DateTime).Value = StartDate;
+            command.Parameters.Add("EndDate", SqlDbType.DateTime).Value = EndTime;
 
             connect.Open();
 
             SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) {
-                NodeDatas.Add(new NodeData(
-                        (int)reader["NodeID"],
-                        (float)reader["Battery"],
-                        (float)reader["Temperature"],
-                        (float)reader["Flow"],
-                        (NodeStatus)reader["Status"]));
+                int id              = (int)reader["NodeID"];
+                float battery       = (float)(double) reader["Battery"];
+                float temperature   = (float)(double)reader["Temperature"];
+                float flow          = (float)(double)reader["Flow"];
+                NodeStatus status   = NodeStatus.DEFAULT;
+                if (Enum.TryParse(typeof(NodeStatus), reader["Status"].ToString(), out var ns) && ns is not null) {
+                    status = (NodeStatus)ns;
+                }
+                DateTime timeStamp  = (DateTime)reader["TimeStamp"];
+
+                NodeDatas.Add(new NodeData(id, battery, temperature, flow, status));
             }
 
             return NodeDatas;
         }
         public static List<NodeData> SelectAllNodesData() {
-            return SelectNodeData(-1);
+            return SelectNodeData(null);
         }
 
         public static void UpdateUser(string userName, byte[]? passwordHash = null, int? accessLevel = null) {

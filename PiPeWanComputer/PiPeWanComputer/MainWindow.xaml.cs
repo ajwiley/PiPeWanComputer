@@ -28,6 +28,11 @@ namespace PiPeWanComputer {
             MainWindowViewModel = new();
             DataContext = MainWindowViewModel;
             PipeDB.CreateDB();
+
+            var nodes = PipeDB.SelectAllNodes();
+            var users = PipeDB.SelectAllUsers();
+            var nodedata = PipeDB.SelectAllNodesData();
+
         }
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
