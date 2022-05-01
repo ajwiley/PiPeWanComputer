@@ -24,6 +24,7 @@
                     <StackPanel>
                         <StackPanel Margin="16, 10, 0, 6" Orientation="Horizontal" HorizontalAlignment="Center">
                             <TextBlock VerticalAlignment="Center" Text="Dark Mode"/>
+                            <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="12 0 8 0" x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="toggleTheme"/>
                         </StackPanel>
                         <Button x:Name="btnExit" ToolTip="Close Application" Content="Exit Application" Click="ExitApp"/>
                     </StackPanel>
