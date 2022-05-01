@@ -28,29 +28,35 @@ namespace PiPeWanComputer.Views
 
         private void SubmitRegistration(object sender, RoutedEventArgs e)
         {
-            if (txtEmail.Text.Length == 0 || txtFirstname.Text.Length == 0 || txtLastname.Text.Length == 0 ||
-                txtPassword.Password.Length == 0 || txtConfirmPassword.Password.Length == 0)
+            if (string.IsNullOrWhiteSpace(txtFirstname.Text))
             {
-                //INSERT SOME SORT OF MESSAGE TO ENTER ALL MISSING REQUIRED INFORMATION
                 txtFirstname.Focus();
-                txtLastname.Focus();
-                txtEmail.Focus();
-                txtPassword.Focus();
-                txtConfirmPassword.Focus();
+
             }
-            else if (!txtEmail.Text.Contains('@'))
+            else if (string.IsNullOrWhiteSpace(txtLastname.Text))
             {
-                //INSERT SOME SOFT OF MESSAGE TO ENTER AN EMAIL
+                txtLastname.Focus();
+            }
+            else if (string.IsNullOrWhiteSpace(txtEmail.Text) || !txtEmail.Text.Contains('@'))
+            {
                 txtEmail.Select(0, txtEmail.Text.Length);
                 txtEmail.Focus();
+            }
+            else if (string.IsNullOrEmpty(txtPassword.Text))
+            {
+                txtPassword.Focus();
+            }
+            else if (string.IsNullOrEmpty(txtConfirmPassword.Text))
+            {
+                txtConfirmPassword.Focus();
             }
             else
             {
                 string firstName = txtFirstname.Text;
                 string lastName = txtLastname.Text;
                 string email = txtEmail.Text;
-                string password = txtPassword.Password;
-                string confirmPassword = txtConfirmPassword.Password;
+                string password = txtPassword.Text;
+                string confirmPassword = txtConfirmPassword.Text;
 
                 if (password != confirmPassword)
                 {
