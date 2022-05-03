@@ -15,6 +15,7 @@ using Microsoft.Win32;
 using PiPeWanComputer.ViewModels;
 using PiPeWanComputer.Models;
 using PiPeWanComputer.SQL_Stuff;
+using PiPeWanComputer.Helper_Classes;
 
 namespace PiPeWanComputer {
     /// <summary>
@@ -32,11 +33,9 @@ namespace PiPeWanComputer {
             var nodes = PipeDB.SelectAllNodes();
             var users = PipeDB.SelectAllUsers();
             var nodedata = PipeDB.SelectAllNodesData();
-
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
             MainWindowViewModel.Dispose();
         }
     }
