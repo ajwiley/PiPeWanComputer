@@ -24,7 +24,6 @@ namespace PiPeWanComputer
         public Registration()
         {
             InitializeComponent();
-
         }
 
         private void SubmitRegistration(object sender, RoutedEventArgs e)
