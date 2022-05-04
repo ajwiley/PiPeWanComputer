@@ -10,7 +10,13 @@
         Title="MainWindow" 
         Height="450" Width="800"
         MinHeight="450" MinWidth="800"
-        Closing="Window_Closing">
+        Closing="Window_Closing"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}">
 
     <Grid>
         <TabControl>

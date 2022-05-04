@@ -34,7 +34,6 @@
                 <TextBox Margin="0, 30, 0, 0" Text="{Binding dUsername}" x:Name="txtUsername" Width="300" FontSize="18" materialDesign:HintAssist.Hint="Enter Username" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
                 <PasswordBox Margin="0, 20, 0, 0" x:Name="txtPassword" Width="300" FontSize="18" materialDesign:HintAssist.Hint="Enter Password" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedPasswordBox}"/>
                 <Button  Margin="0,20,0,0" x:Name="bntLogin" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="53" Width="300" materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="LOG IN" Click="DoLogin"></Button>
-                <Button Margin="0,20,0,0" x:Name="btnOpenRegisterPage" Style="{StaticResource MaterialDesignFlatButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="53" Width="300" materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="Create Account" Click="OpenRegisterPage"></Button>
             </StackPanel>
         </materialDesign:DialogHost>
     </materialDesign:Card>
