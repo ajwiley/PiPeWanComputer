@@ -12,8 +12,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MaterialDesignThemes.Wpf;
+using PiPeWanComputer.SQL_Stuff;
 
-namespace PiPeWanComputer.Views
+namespace PiPeWanComputer
 {
     /// <summary>
     /// Interaction logic for Registration.xaml
@@ -30,47 +31,53 @@ namespace PiPeWanComputer.Views
         {
             if (string.IsNullOrWhiteSpace(txtFirstname.Text))
             {
+                // TODO: username shouldn't be longer than 12 characters (username is first letter of first name + lastname)
+                MessageBox.Show("Must enter a first name!");
                 txtFirstname.Focus();
 
             }
             else if (string.IsNullOrWhiteSpace(txtLastname.Text))
             {
+                MessageBox.Show("Must enter a last name!");
                 txtLastname.Focus();
             }
             else if (string.IsNullOrWhiteSpace(txtEmail.Text) || !txtEmail.Text.Contains('@'))
             {
+                // TODO: Regex Check email
+
+                MessageBox.Show("Must enter a valid name!");
                 txtEmail.Select(0, txtEmail.Text.Length);
                 txtEmail.Focus();
             }
             else if (string.IsNullOrEmpty(txtPassword.Text))
             {
+                // TODO: password shouldn't be longer than 12 characters
+                MessageBox.Show("Must enter a password!");
                 txtPassword.Focus();
             }
             else if (string.IsNullOrEmpty(txtConfirmPassword.Text))
             {
+                MessageBox.Show("Please confirm password!");
                 txtConfirmPassword.Focus();
+            }
+            else if (txtPassword.Text != txtConfirmPassword.Text) {
+                MessageBox.Show("Passwords do not match!");
+                txtPassword.Focus();
             }
             else
             {
                 string firstName = txtFirstname.Text;
                 string lastName = txtLastname.Text;
-                string email = txtEmail.Text;
                 string password = txtPassword.Text;
-                string confirmPassword = txtConfirmPassword.Text;
 
-                if (password != confirmPassword)
-                {
-                    //INSERT MESSAGE 
-                    txtConfirmPassword.Focus();
-                }
-                else
-                {
-                    //CODE THAT CONNECTS TO DATABASE AND INSERTS INFORMATION TO THE CORRECT TABLE WITH firstName, lastName, email, and password
-                    Login loginWindow = new Login();
-                    loginWindow.Show();
-                    Close();
-                }
+                string username = firstName.ToLower().First() + lastName.ToLower();
+                password = password.PadRight(64, '0');
+                var pBytes = Encoding.UTF8.GetBytes(password);
+                PipeDB.AddUser(username, pBytes);
 
+                Login loginWindow = new Login();
+                loginWindow.Show();
+                Close();
             }
         }
 
@@ -103,6 +110,12 @@ namespace PiPeWanComputer.Views
             }
 
             paletteHelper.SetTheme(theme);
+        }
+
+        private void btnLoginWindow_Click(object sender, RoutedEventArgs e) {
+            Login loginWindow = new Login();
+            loginWindow.Show();
+            Close();
         }
     }
 }
