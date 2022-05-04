@@ -17,13 +17,13 @@ IF NOT EXISTS (SELECT * FROM [User] WHERE [UserName] = @UserName)
 
 		SET @Response = 'Success'
 
-		SELECT @Response [Response], SCOPE_IDENTITY() [UserID]
+		SELECT @Response [Response], SCOPE_IDENTITY() [UserName]
 	END
 ELSE
 	BEGIN
-		SET @Response = 'Cannot have duplicate value for User name'
+		SET @Response = 'Cannot have duplicate value for UserName'
 
-		SELECT @Response [Response], 0 [UserID]
+		SELECT @Response [Response], 0 [UserName]
 	END
 
 

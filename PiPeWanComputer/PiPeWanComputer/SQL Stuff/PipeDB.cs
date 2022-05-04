@@ -250,12 +250,12 @@ namespace PiPeWanComputer.SQL_Stuff {
             scope.Complete();
         }
 
-        public static User? SelectUser(string userID) {
+        public static User? SelectUser(string userName) {
             using var connect = new SqlConnection(ConnectionString);
             using var command = new SqlCommand("[dbo].SelectUser", connect);
             command.CommandType = CommandType.StoredProcedure;
 
-            command.Parameters.Add("UserName", SqlDbType.VarChar).Value = userID;
+            command.Parameters.Add("UserName", SqlDbType.VarChar).Value = userName;
 
             connect.Open();
 
