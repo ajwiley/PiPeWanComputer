@@ -34,7 +34,6 @@ namespace PiPeWanComputer.ViewModels
             _StartTime = null;
             TemperatureChartViewModel = new(Type.Temperature);
             FlowChartViewModel = new(Type.Flow);
-            RegistrationViewModel = new();
 
             _Arduino.PortDataChanged += (obj, e) =>
             {
@@ -44,9 +43,9 @@ namespace PiPeWanComputer.ViewModels
 
                 var currentTime = (TimeSpan)(data.Time - _StartTime);
 
-                TemperatureChartViewModel.NextPoint = new ObservablePoint(data.Temperature, currentTime.TotalSeconds);
+                TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, data.Temperature);
 
-                FlowChartViewModel.NextPoint =  new ObservablePoint(data.Flow, currentTime.TotalSeconds);
+                FlowChartViewModel.NextPoint =  new ObservablePoint(currentTime.TotalSeconds, data.Flow);
             };
             _Arduino.ConnectionChanged += (obj, e) =>
             {
@@ -61,37 +60,11 @@ namespace PiPeWanComputer.ViewModels
                     _ConnectionLostTimer.Stop();
                 }
             };
-
-            // Testing Purposes Only
-            //_Arduino.Start();
-            MockArduino = new Timer()
-            {
-                AutoReset = true,
-                Interval = 1000
-            };
-            MockArduino.Elapsed += (obj, e) =>
-            {
-                if (_StartTime == null) { _StartTime = DateTime.Now; }
-
-                var rand = new Random();
-                var mockTemp = rand.NextDouble() * (80 - (-32)) + (-32);
-                var mockFlow = rand.NextDouble() * (500 - 100) + 100;
-
-                var mockData = new SparkFunSerialData(mockTemp, mockFlow);
-
-                var currentTime = (TimeSpan)(DateTime.Now - _StartTime);
-
-                TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, mockData.Temperature);
-
-                FlowChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, mockData.Flow);
-            };
-            MockArduino.Start();
         }
 
         #region ViewModels
         public ChartViewModel TemperatureChartViewModel { get; }
         public ChartViewModel FlowChartViewModel { get; }
-        public RegistrationViewModel RegistrationViewModel { get; }
         #endregion
 
         public void Dispose()
