@@ -37,14 +37,14 @@ namespace PiPeWanComputer.Helper_Classes {
             Body = $"Dear, {To}"
                 + "\n\nIt appears that your pipe is going to leak soon."
                 + $"\nThe current water temperature is: {WaterTemp}F"
-                + $"\nThe current flow rate is: {FlowRate}(units)"
+                + $"\nThe current flow rate is: {FlowRate}(L/Min)"
                 + "\nWe reccomend that you turn off your water ASAP!"
                 + "\n\nSincerely,\nPiPeWan";
 
             Send(To, Subject, Body);
         }
 
-        public static void Send(string To, string Subject, string Body) {
+        public void Send(string To, string Subject, string Body) {
             var Client = new SmtpClient(Host, Port) {
                 Credentials = new NetworkCredential(Username, Password),
                 EnableSsl = true,

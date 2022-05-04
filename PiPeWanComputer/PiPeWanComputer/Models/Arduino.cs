@@ -116,9 +116,9 @@ namespace PiPeWanComputer.Models {
         private static string ComPortNames(string VID, string PID) {
             // Information we are looking for from the com port
             string pattern = string.Format("^VID_{0}.PID_{1}", VID, PID);
-            Regex _RegexPattern = new Regex(pattern, RegexOptions.IgnoreCase);
+            Regex _RegexPattern = new(pattern, RegexOptions.IgnoreCase);
 
-            List<string> comports = new List<string>();
+            List<string> comports = new();
             RegistryKey RegisterKey1 = Registry.LocalMachine;
             RegistryKey RegisterKey2 = RegisterKey1.OpenSubKey("SYSTEM\\CurrentControlSet\\Enum");
 
