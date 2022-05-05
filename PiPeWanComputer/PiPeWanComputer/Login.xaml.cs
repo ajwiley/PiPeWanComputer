@@ -35,13 +35,24 @@ namespace PiPeWanComputer {
         }
 
         private void DoLogin(object sender, RoutedEventArgs e) {
+            if (String.IsNullOrEmpty(txtUsername.Text)) {
+                MessageBox.Show($"Must enter a username!");
+                txtUsername.Focus();
+                return;
+            }
+            else if (string.IsNullOrEmpty(txtPassword.Password)) {
+                MessageBox.Show($"Must enter a password!");
+                txtPassword.Focus();
+                return;
+            }
+            
             string username = txtUsername.Text.ToLower();
             string password = txtPassword.Password;
 
             password = password.PadRight(64, '0');
             var pBytes = Encoding.UTF8.GetBytes(password);
 
-            // If no user with that username is fount, SelectUser() returns null
+            // If no user with that username is found, SelectUser() returns null
             User? user = PipeDB.SelectUser(username);
 
             if (user is null) {
