@@ -42,7 +42,7 @@
                     <Wpf:LineSeries Values="{Binding ChartValues}"/>
                 </Wpf:CartesianChart.Series>
                 <Wpf:CartesianChart.AxisX>
-                    <Wpf:Axis Title="{Binding XAxisTitle}"/>
+                    <Wpf:Axis Title="{Binding XAxisTitle}" LabelFormatter="{Binding FormatTime}"/>
                 </Wpf:CartesianChart.AxisX>
                 <Wpf:CartesianChart.AxisY>
                     <Wpf:Axis Title="{Binding YAxisTitle}"/>

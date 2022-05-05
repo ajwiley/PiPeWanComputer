@@ -68,15 +68,20 @@ namespace PiPeWanComputer
                 string firstName = txtFirstname.Text;
                 string lastName = txtLastname.Text;
                 string password = txtPassword.Text;
-
                 string username = firstName.ToLower().First() + lastName.ToLower();
-                password = password.PadRight(64, '0');
-                var pBytes = Encoding.UTF8.GetBytes(password);
-                PipeDB.AddUser(username, pBytes);
 
-                Login loginWindow = new Login();
-                loginWindow.Show();
-                Close();
+                if (PipeDB.SelectUser(username) is null) {
+                    password = password.PadRight(64, '0');
+                    var pBytes = Encoding.UTF8.GetBytes(password);
+                    PipeDB.AddUser(username, pBytes);
+                    Login loginWindow = new Login();
+                    loginWindow.Show();
+                    Close();
+                }
+                else {
+                    MessageBox.Show($"Username {username} already exists!");
+                    txtFirstname.Focus();
+                }
             }
         }
 
