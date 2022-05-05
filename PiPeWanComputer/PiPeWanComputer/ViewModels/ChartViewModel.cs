@@ -73,9 +73,7 @@ namespace PiPeWanComputer.ViewModels {
             UpdateChartRange = new RelayCommand(UpdateChartRange_Execute, UpdateChartRange_CanExecute);
         }
 
-        private bool UpdateChartRange_CanExecute(object obj) {
-            return obj as string != _LastClicked;
-        }
+        private bool UpdateChartRange_CanExecute(object obj) => obj as string != _LastClicked;
 
         private void UpdateChartRange_Execute(object obj) {
             string content = obj as string;
