@@ -12,13 +12,15 @@ IF @StartDate IS NOT NULL AND @EndDate IS NOT NULL
 	BEGIN
 		SELECT *
 		FROM [NodeData]
-		WHERE ([NodeID] = @NodeID OR @NodeID IS NULL) AND [TimeStamp] >= @StartDate AND [TimeStamp] <= @EndDate 
+		WHERE ([NodeID] = @NodeID OR @NodeID IS NULL) AND [TimeStamp] >= @StartDate AND [TimeStamp] <= @EndDate
+		ORDER BY [TimeStamp] ASC
 	END
 ELSE
 	BEGIN
 		SELECT *
 		FROM [NodeData]
 		WHERE [NodeID] = @NodeID OR @NodeID IS NULL
+		ORDER BY [TimeStamp] ASC
 	END
 
 
