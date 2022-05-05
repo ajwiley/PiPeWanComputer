@@ -19,6 +19,7 @@ namespace PiPeWanComputer.SQL_Stuff {
         public float Temperature { get; }
         public float Flow { get; }
         public NodeStatus Status { get; }
+        public DateTime TimeStamp { get; }
 
         public NodeData(int nodeID, float battery, float temperature, float flow, NodeStatus status = NodeStatus.IDLE) {
             NodeID = nodeID;
@@ -26,6 +27,14 @@ namespace PiPeWanComputer.SQL_Stuff {
             Temperature = temperature;
             Flow = flow;
             Status = status;
+        }
+        public NodeData(int nodeID, float battery, float temperature, float flow, DateTime timeStamp, NodeStatus status = NodeStatus.IDLE) {
+            NodeID = nodeID;
+            Battery = battery;
+            Temperature = temperature;
+            Flow = flow;
+            Status = status;
+            TimeStamp = timeStamp;
         }
     }
 }

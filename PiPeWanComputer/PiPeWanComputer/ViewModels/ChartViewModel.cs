@@ -1,6 +1,7 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using PiPeWanComputer.Helper_Classes;
+using PiPeWanComputer.SQL_Stuff;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,9 +46,18 @@ namespace PiPeWanComputer.ViewModels {
 
         public ChartViewModel(Type type)
         {
+            _ChartValues = new();
             if (type.Equals(Type.Temperature))
             {
                 YAxisTitle = "Temperature (F)";
+
+                List<NodeData> nodeDatas = PipeDB.SelectNodeData(1);
+                List<ObservablePoint> observablePoints = new();
+
+                foreach (var nd in nodeDatas) {
+                    observablePoints.Add(new ObservablePoint(nd.TimeStamp.Ticks, nd.Temperature));
+                }
+
             }
             else if (type.Equals(Type.Flow))
             {
@@ -59,7 +69,8 @@ namespace PiPeWanComputer.ViewModels {
             _MinY = 0;
             _MaxY = 1;
             _LastClicked = "";
-            _ChartValues = new();
+
+            
 
             // Using constructor without canExecute because I want it to always be true (and therefore the buttons always enabled).
             // Defining an anonymous action parameter because this code won't be used anywhere else.

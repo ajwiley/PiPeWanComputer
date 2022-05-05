@@ -94,15 +94,6 @@ namespace PiPeWanComputer.SQL_Stuff {
             RunSqlScriptFile(Procedures + @"SELECT\SelectUser.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNode.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNodeData.sql");
-
-            // Now that some nodes exist and we have procedures created to find them, we can use their NodeID's to generate Mock NodeData
-            var NodeIDs = new List<int>();
-            var nodes = PipeDB.SelectAllNodes();
-            nodes.ForEach(node => { NodeIDs.Add(node.NodeID); });
-            var rand = new Random();
-            foreach (var id in NodeIDs) {
-                PipeDB.AddNodeData(id, (float)rand.NextDouble(), (float)rand.NextDouble()*100, (float)rand.NextDouble()*10, NodeStatus.RUNNING);
-            }
         }
 
         /// <summary>
@@ -358,13 +349,14 @@ namespace PiPeWanComputer.SQL_Stuff {
                 float battery       = (float)(double) reader["Battery"];
                 float temperature   = (float)(double)reader["Temperature"];
                 float flow          = (float)(double)reader["Flow"];
+                DateTime timeStamp  = (DateTime)reader["TimeStamp"];
+
                 NodeStatus status   = NodeStatus.DEFAULT;
                 if (Enum.TryParse(typeof(NodeStatus), reader["Status"].ToString(), out var ns) && ns is not null) {
                     status = (NodeStatus)ns;
                 }
-                DateTime timeStamp  = (DateTime)reader["TimeStamp"];
 
-                NodeDatas.Add(new NodeData(id, battery, temperature, flow, status));
+                NodeDatas.Add(new NodeData(id, battery, temperature, flow, timeStamp,status));
             }
 
             return NodeDatas;
