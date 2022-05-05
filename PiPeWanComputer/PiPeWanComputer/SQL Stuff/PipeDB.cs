@@ -95,11 +95,15 @@ namespace PiPeWanComputer.SQL_Stuff {
             RunSqlScriptFile(Procedures + @"SELECT\SelectNode.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNodeData.sql");
 
-            PipeDB.AddNodeData(1, temperature:20f, flow:40);
-            PipeDB.AddNodeData(1, temperature:21f, flow:42);
-            PipeDB.AddNodeData(1, temperature:22f, flow:40);
-            PipeDB.AddNodeData(1, temperature:23f, flow:38);
-            PipeDB.AddNodeData(1, temperature:24f, flow:36);
+
+            // Testing Only
+            {
+                PipeDB.AddNodeData(1, temperature: 20f, flow: 40);
+                PipeDB.AddNodeData(1, temperature: 21f, flow: 42);
+                PipeDB.AddNodeData(1, temperature: 22f, flow: 40);
+                PipeDB.AddNodeData(1, temperature: 23f, flow: 38);
+                PipeDB.AddNodeData(1, temperature: 24f, flow: 36);
+            }
         }
 
         /// <summary>
@@ -351,18 +355,18 @@ namespace PiPeWanComputer.SQL_Stuff {
             SqlDataReader reader = command.ExecuteReader();
 
             while (reader.Read()) {
-                int id              = (int)reader["NodeID"];
-                float battery       = (float)(double) reader["Battery"];
-                float temperature   = (float)(double)reader["Temperature"];
-                float flow          = (float)(double)reader["Flow"];
-                DateTime timeStamp  = (DateTime)reader["TimeStamp"];
+                int id = (int)reader["NodeID"];
+                float battery = (float)(double)reader["Battery"];
+                float temperature = (float)(double)reader["Temperature"];
+                float flow = (float)(double)reader["Flow"];
+                DateTime timeStamp = (DateTime)reader["TimeStamp"];
 
-                NodeStatus status   = NodeStatus.DEFAULT;
+                NodeStatus status = NodeStatus.DEFAULT;
                 if (Enum.TryParse(typeof(NodeStatus), reader["Status"].ToString(), out var ns) && ns is not null) {
                     status = (NodeStatus)ns;
                 }
 
-                NodeDatas.Add(new NodeData(id, battery, temperature, flow, timeStamp,status));
+                NodeDatas.Add(new NodeData(id, battery, temperature, flow, timeStamp, status));
             }
 
             return NodeDatas;
