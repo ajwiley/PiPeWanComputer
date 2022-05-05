@@ -23,31 +23,9 @@ namespace PiPeWanComputer {
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window {
-        public MainWindowViewModel MainWindowViewModel { get; }
-
         public MainWindow() {
             InitializeComponent();
-            MainWindowViewModel = new();
-            DataContext = MainWindowViewModel;
-        }
-
-        private void toggleTheme(object sender, RoutedEventArgs e) {
-            PaletteHelper paletteHelper = new();
-            ITheme theme = paletteHelper.GetTheme();
-
-            if (theme.GetBaseTheme() == BaseTheme.Dark) {
-                theme.SetBaseTheme(Theme.Light);
-            }
-            else {
-                theme.SetBaseTheme(Theme.Dark);
-            }
-
-            paletteHelper.SetTheme(theme);
-        }
-
-        private void ExitApp(object sender, RoutedEventArgs e) {
-            MainWindowViewModel.Dispose();
-            Application.Current.Shutdown();
+            DataContext = new MainWindowViewModel();
         }
     }
 }

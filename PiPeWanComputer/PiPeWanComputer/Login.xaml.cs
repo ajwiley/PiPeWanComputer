@@ -23,7 +23,6 @@ namespace PiPeWanComputer {
     public partial class Login : Window {
         public Login() {
             InitializeComponent();
-            PipeDB.CreateDB();
         }
 
         private void ExitApp(object sender, RoutedEventArgs e) {

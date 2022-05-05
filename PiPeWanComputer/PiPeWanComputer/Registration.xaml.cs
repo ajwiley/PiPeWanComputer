@@ -24,6 +24,7 @@ namespace PiPeWanComputer
         public Registration()
         {
             InitializeComponent();
+            PipeDB.CreateDB();
         }
 
         private void SubmitRegistration(object sender, RoutedEventArgs e)
