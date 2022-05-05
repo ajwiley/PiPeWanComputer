@@ -46,16 +46,24 @@ namespace PiPeWanComputer.ViewModels
 
                 FlowChartViewModel.NextPoint =  new ObservablePoint(DateTime.Now.Ticks, data.Flow);
 
-                if (data.Temperature <= 35 || data.Flow <= 2) {
-                    if (SentWarning == false) {
+                if (data.Flow <= 1 && SentWarning == false) {
+                    if (EmailAron) {
                         Email.SendWarning("awiley.dev@gmail.com", data.Temperature, data.Flow);
-                        SentWarning = true;
-                        LastSent = DateTime.Now;
                     }
-                    else if (DateTime.Now - LastSent > TimeSpan.FromMinutes(15)) {
-                        Email.SendWarning("awiley.dev@gmail.com", data.Temperature, data.Flow);
-                        LastSent = DateTime.Now;
+                    if (EmailAlex) {
+                        Email.SendWarning("rossillonalex@gmail.com", data.Temperature, data.Flow);
                     }
+                    if (emailEdgar) {
+                        Email.SendWarning("", data.Temperature, data.Flow);
+                    }
+                    if (emailMo) {
+                        Email.SendWarning("", data.Temperature, data.Flow);
+                    }
+
+                    SentWarning = true;
+                }
+                else if (data.Flow >= 5) {
+                    SentWarning = false;
                 }
             };
             _Arduino.ConnectionChanged += (obj, e) =>
@@ -84,5 +92,17 @@ namespace PiPeWanComputer.ViewModels
         {
             _Arduino?.Dispose();
         }
+
+        private bool emailAron;
+        public bool EmailAron { get => emailAron; set => SetProperty(ref emailAron, value); }
+
+        private bool emailAlex;
+        public bool EmailAlex { get => emailAlex; set => SetProperty(ref emailAlex, value); }
+
+        private bool emailEdgar;
+        public bool EmailEdgar { get => emailEdgar; set => SetProperty(ref emailEdgar, value); }
+
+        private bool emailMo;
+        public bool EmailMo { get => emailMo; set => SetProperty(ref emailMo, value); }
     }
 }
