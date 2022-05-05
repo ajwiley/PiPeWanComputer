@@ -18,22 +18,30 @@
         Background="{x:Null}"
         AllowsTransparency="True"
         WindowStyle="None"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        WindowState="Maximized">
     <materialDesign:Card UniformCornerRadius="15" Margin="25" materialDesign:ShadowAssist.ShadowDepth="Depth4">
-        <materialDesign:DialogHost CloseOnClickAway="True" x:Name="DialogHost">
-            <StackPanel Margin="0, 10, 0, 0">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <materialDesign:DialogHost CloseOnClickAway="True" x:Name="DialogHost">
                 <materialDesign:PopupBox HorizontalAlignment="Right" Margin="0, 20, 20, 0" PlacementMode="BottomAndAlignRightEdges" StaysOpen="False" Height="25">
-                    <StackPanel>
-                        <StackPanel Margin="16, 10, 0, 6" Orientation="Horizontal" HorizontalAlignment="Center">
-                            <TextBlock VerticalAlignment="Center" Text="Dark Mode"/>
-                            <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="12 0 8 0" x:Name="themeToggle" IsChecked="{Binding IsDarkTheme}" Click="toggleTheme"/>
+                        <StackPanel>
+                            <StackPanel Margin="16, 10, 0, 6" Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock VerticalAlignment="Center" Text="Dark Mode"/>
+                                <ToggleButton Cursor="Hand" ToolTip="Enable Dark Mode" Margin="12 0 8 0" x:Name="themeToggle" Click="toggleTheme"/>
+                            </StackPanel>
+                            <Button x:Name="btnExit" ToolTip="Close Application" Content="Exit Application" Click="ExitApp"/>
                         </StackPanel>
-                        <Button x:Name="btnExit" ToolTip="Close Application" Content="Exit Application" Click="ExitApp"/>
-                    </StackPanel>
-                </materialDesign:PopupBox>
-                <views:ChartView DataContext="{Binding TemperatureChartViewModel}" Height="148"/>
-                <views:ChartView DataContext="{Binding FlowChartViewModel}" Grid.Row="1" Height="153"/>
-            </StackPanel>
-        </materialDesign:DialogHost>
+                    </materialDesign:PopupBox>
+            </materialDesign:DialogHost>
+
+            <views:ChartView Grid.Row="1" DataContext="{Binding TemperatureChartViewModel}"/>
+            <views:ChartView Grid.Row="2" DataContext="{Binding FlowChartViewModel}"/>
+        </Grid>
     </materialDesign:Card>
 </Window>

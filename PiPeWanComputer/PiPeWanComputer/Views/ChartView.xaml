@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
              xmlns:viewmodels="clr-namespace:PiPeWanComputer.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewmodels:ChartViewModel}"
              mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance Type=viewmodels:ChartViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
@@ -34,11 +34,10 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
-            <!--Figure out how to adjust the grid lines and values based on the range.-->
-            <!--i.e. if the X-Axis spans 5 seconds each lines should be a second, but if it spans multiple days, a gridline should represent hours etc-->
-            <Wpf:CartesianChart>
+
+            <Wpf:CartesianChart VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                 <Wpf:CartesianChart.Series>
                     <Wpf:LineSeries Values="{Binding ChartValues}"/>
                 </Wpf:CartesianChart.Series>
@@ -50,7 +49,12 @@
                 </Wpf:CartesianChart.AxisY>
             </Wpf:CartesianChart>
 
-            <Label Grid.Column="1" Content="{Binding CurrentY}" VerticalAlignment="Center" FontSize="30"/>
+            <Label VerticalAlignment="Center" HorizontalAlignment="Left" Margin="0,0,20,0" Grid.Column="1" FontSize="16">
+                <Label.Content>
+                    <TextBlock TextWrapping="Wrap" Text="{Binding CurrentY}"/>
+                </Label.Content>
+            </Label>
+
         </Grid>
     </Grid>
 </UserControl>

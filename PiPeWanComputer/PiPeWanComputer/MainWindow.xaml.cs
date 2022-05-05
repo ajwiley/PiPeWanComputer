@@ -31,32 +31,22 @@ namespace PiPeWanComputer {
             DataContext = MainWindowViewModel;
         }
 
-        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e) {
-            MainWindowViewModel.Dispose();
-        }
-
-        public bool IsDarkTheme { get; set; }
-        private readonly PaletteHelper paletteHelper = new PaletteHelper();
-        private void toggleTheme(object sender, RoutedEventArgs e)
-        {
+        private void toggleTheme(object sender, RoutedEventArgs e) {
+            PaletteHelper paletteHelper = new();
             ITheme theme = paletteHelper.GetTheme();
 
-            if (IsDarkTheme = theme.GetBaseTheme() == BaseTheme.Dark)
-            {
-                IsDarkTheme = false;
+            if (theme.GetBaseTheme() == BaseTheme.Dark) {
                 theme.SetBaseTheme(Theme.Light);
             }
-            else
-            {
-                IsDarkTheme = true;
+            else {
                 theme.SetBaseTheme(Theme.Dark);
             }
 
             paletteHelper.SetTheme(theme);
         }
 
-        private void ExitApp(object sender, RoutedEventArgs e)
-        {
+        private void ExitApp(object sender, RoutedEventArgs e) {
+            MainWindowViewModel.Dispose();
             Application.Current.Shutdown();
         }
     }
