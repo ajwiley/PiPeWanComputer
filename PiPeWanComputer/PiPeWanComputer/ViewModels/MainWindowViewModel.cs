@@ -60,6 +60,8 @@ namespace PiPeWanComputer.ViewModels
                     _ConnectionLostTimer.Stop();
                 }
             };
+
+            _Arduino.Start();
         }
 
         #region ViewModels
