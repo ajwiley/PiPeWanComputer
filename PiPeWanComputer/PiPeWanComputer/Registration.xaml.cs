@@ -44,7 +44,7 @@ namespace PiPeWanComputer
             {
                 // TODO: Regex Check email
 
-                MessageBox.Show("Must enter a valid name!");
+                MessageBox.Show("Must enter a valid email!");
                 txtEmail.Select(0, txtEmail.Text.Length);
                 txtEmail.Focus();
             }
