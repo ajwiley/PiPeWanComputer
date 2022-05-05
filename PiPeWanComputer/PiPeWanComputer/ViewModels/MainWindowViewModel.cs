@@ -17,7 +17,6 @@ namespace PiPeWanComputer.ViewModels
     {
         private readonly Arduino _Arduino;
         private readonly Timer _ConnectionLostTimer;
-        private DateTime LastSent;
         private bool SentWarning = false;
 
         public MainWindowViewModel()
