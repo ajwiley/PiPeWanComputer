@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
+using PiPeWanComputer.Helper_Classes;
 
 namespace PiPeWanComputer.ViewModels
 {
@@ -16,7 +17,8 @@ namespace PiPeWanComputer.ViewModels
         private DateTime? _StartTime;
         private readonly Arduino _Arduino;
         private readonly Timer _ConnectionLostTimer;
-        private readonly Timer MockArduino;
+        private DateTime LastSent;
+        private bool SentWarning = false;
 
         public MainWindowViewModel()
         {
@@ -46,6 +48,18 @@ namespace PiPeWanComputer.ViewModels
                 TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, data.Temperature);
 
                 FlowChartViewModel.NextPoint =  new ObservablePoint(currentTime.TotalSeconds, data.Flow);
+
+                if (data.Temperature <= 35 || data.Flow <= 2) {
+                    if (SentWarning == false) {
+                        Email.SendWarning("awiley.dev@gmail.com", data.Temperature, data.Flow);
+                        SentWarning = true;
+                        LastSent = DateTime.Now;
+                    }
+                    else if (DateTime.Now - LastSent > TimeSpan.FromMinutes(15)) {
+                        Email.SendWarning("awiley.dev@gmail.com", data.Temperature, data.Flow);
+                        LastSent = DateTime.Now;
+                    }
+                }
             };
             _Arduino.ConnectionChanged += (obj, e) =>
             {
