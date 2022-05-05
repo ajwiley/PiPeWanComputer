@@ -19,9 +19,11 @@ namespace PiPeWanComputer.Views {
     /// </summary>
     public partial class ChartView : UserControl {
         public Func<double, string> TimeFormatter { get; set; } = value => new DateTime((long)(value)).ToLongTimeString();
+        public Func<double, string> ValueFormatter { get; set; } = value => value.ToString("F1");
         public ChartView() {
             InitializeComponent();
             CC1AxisX.LabelFormatter = TimeFormatter;
+            CC1AxisY.LabelFormatter = ValueFormatter;
         }
     }
 }

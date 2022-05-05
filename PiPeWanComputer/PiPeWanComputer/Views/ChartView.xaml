@@ -25,10 +25,8 @@
                 </Style>
             </StackPanel.Resources>
             <Button Content="All"/>
-            <Button Content="YTD"/>
-            <Button Content="Month"/>
-            <Button Content="Week"/>
-            <Button Content="Day"/>
+            <Button Content="Hour"/>
+            <Button Content="Minute"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
@@ -39,13 +37,13 @@
 
             <Wpf:CartesianChart x:Name="CC1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DisableAnimations="True" DataTooltip="{x:Null}" Hoverable="False">
                 <Wpf:CartesianChart.Series>
-                    <Wpf:LineSeries Values="{Binding ChartValues}"/>
+                    <Wpf:LineSeries LineSmoothness="0.25" Values="{Binding ChartValues}"/>
                 </Wpf:CartesianChart.Series>
                 <Wpf:CartesianChart.AxisX>
-                    <Wpf:Axis x:Name="CC1AxisX" Title="{Binding XAxisTitle}"/>
+                    <Wpf:Axis x:Name="CC1AxisX" Title="{Binding XAxisTitle}" MinValue="{Binding MinX}"/>
                 </Wpf:CartesianChart.AxisX>
                 <Wpf:CartesianChart.AxisY>
-                    <Wpf:Axis Title="{Binding YAxisTitle}"/>
+                    <Wpf:Axis x:Name="CC1AxisY" Title="{Binding YAxisTitle}"/>
                 </Wpf:CartesianChart.AxisY>
             </Wpf:CartesianChart>
 
