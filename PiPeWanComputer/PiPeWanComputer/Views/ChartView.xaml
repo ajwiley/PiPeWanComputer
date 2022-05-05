@@ -37,7 +37,7 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Wpf:CartesianChart VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+            <Wpf:CartesianChart VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DisableAnimations="True" DataTooltip="{x:Null}" Hoverable="False">
                 <Wpf:CartesianChart.Series>
                     <Wpf:LineSeries Values="{Binding ChartValues}"/>
                 </Wpf:CartesianChart.Series>
