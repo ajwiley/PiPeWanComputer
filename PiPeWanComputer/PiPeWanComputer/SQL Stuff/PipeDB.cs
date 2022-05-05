@@ -94,6 +94,12 @@ namespace PiPeWanComputer.SQL_Stuff {
             RunSqlScriptFile(Procedures + @"SELECT\SelectUser.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNode.sql");
             RunSqlScriptFile(Procedures + @"SELECT\SelectNodeData.sql");
+
+            PipeDB.AddNodeData(1, temperature:20f, flow:40);
+            PipeDB.AddNodeData(1, temperature:21f, flow:42);
+            PipeDB.AddNodeData(1, temperature:22f, flow:40);
+            PipeDB.AddNodeData(1, temperature:23f, flow:38);
+            PipeDB.AddNodeData(1, temperature:24f, flow:36);
         }
 
         /// <summary>

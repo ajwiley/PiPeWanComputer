@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using PiPeWanComputer.Helper_Classes;
+using PiPeWanComputer.SQL_Stuff;
 
 namespace PiPeWanComputer.ViewModels
 {
     public class MainWindowViewModel : ViewModelBase, IDisposable
     {
-        private DateTime? _StartTime;
         private readonly Arduino _Arduino;
         private readonly Timer _ConnectionLostTimer;
         private DateTime LastSent;
@@ -33,21 +33,18 @@ namespace PiPeWanComputer.ViewModels
             };
 
             _Arduino = new();
-            _StartTime = null;
-            TemperatureChartViewModel = new(Type.Temperature);
-            FlowChartViewModel = new(Type.Flow);
+
+            List<NodeData> nodeDatas = PipeDB.SelectNodeData(1);
+            TemperatureChartViewModel = new(Type.Temperature, nodeDatas);
+            FlowChartViewModel = new(Type.Flow, nodeDatas);
 
             _Arduino.PortDataChanged += (obj, e) =>
             {
                 SparkFunSerialData data = e.Data;
 
-                if (_StartTime == null) { _StartTime = data.Time; }
+                TemperatureChartViewModel.NextPoint = new ObservablePoint(DateTime.Now.Ticks, data.Temperature);
 
-                var currentTime = (TimeSpan)(data.Time - _StartTime);
-
-                TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, data.Temperature);
-
-                FlowChartViewModel.NextPoint =  new ObservablePoint(currentTime.TotalSeconds, data.Flow);
+                FlowChartViewModel.NextPoint =  new ObservablePoint(DateTime.Now.Ticks, data.Flow);
 
                 if (data.Temperature <= 35 || data.Flow <= 2) {
                     if (SentWarning == false) {

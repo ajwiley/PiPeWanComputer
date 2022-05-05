@@ -44,33 +44,35 @@ namespace PiPeWanComputer.ViewModels {
 
         public ICommand UpdateChartRange { get; private set; }
 
-        public ChartViewModel(Type type)
+        public ChartViewModel(Type type, List<NodeData> nodeDatas)
         {
-            _ChartValues = new();
+            List<ObservablePoint> observablePoints = new();
+
             if (type.Equals(Type.Temperature))
             {
                 YAxisTitle = "Temperature (F)";
 
-                List<NodeData> nodeDatas = PipeDB.SelectNodeData(1);
-                List<ObservablePoint> observablePoints = new();
-
                 foreach (var nd in nodeDatas) {
                     observablePoints.Add(new ObservablePoint(nd.TimeStamp.Ticks, nd.Temperature));
                 }
-
             }
             else if (type.Equals(Type.Flow))
             {
                 YAxisTitle = "Flow (ml/hr)";
+                
+                foreach (var nd in nodeDatas) {
+                    observablePoints.Add(new ObservablePoint(nd.TimeStamp.Ticks, nd.Flow));
+                }               
             }
+
+            ChartValues = new(observablePoints);
 
             _XAxisTitle = "Time (Seconds)";
             _Current = "0";
             _MinY = 0;
             _MaxY = 1;
             _LastClicked = "";
-
-            
+                        
 
             // Using constructor without canExecute because I want it to always be true (and therefore the buttons always enabled).
             // Defining an anonymous action parameter because this code won't be used anywhere else.
