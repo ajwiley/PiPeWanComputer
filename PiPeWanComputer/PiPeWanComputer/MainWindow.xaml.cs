@@ -29,7 +29,7 @@ namespace PiPeWanComputer {
             InitializeComponent();
             MainWindowViewModel = new();
             DataContext = MainWindowViewModel;
-            PipeDB.CreateDB();
+            //PipeDB.CreateDB();
 
             var nodes = PipeDB.SelectAllNodes();
             var users = PipeDB.SelectAllUsers();

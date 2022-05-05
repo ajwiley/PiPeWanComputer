@@ -44,9 +44,9 @@ namespace PiPeWanComputer.ViewModels
 
                 var currentTime = (TimeSpan)(data.Time - _StartTime);
 
-                TemperatureChartViewModel.NextPoint = new ObservablePoint(data.Temperature, currentTime.TotalSeconds);
+                TemperatureChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, data.Temperature);
 
-                FlowChartViewModel.NextPoint =  new ObservablePoint(data.Flow, currentTime.TotalSeconds);
+                FlowChartViewModel.NextPoint =  new ObservablePoint(currentTime.TotalSeconds, data.Flow);
             };
             _Arduino.ConnectionChanged += (obj, e) =>
             {
@@ -63,7 +63,7 @@ namespace PiPeWanComputer.ViewModels
             };
 
             // Testing Purposes Only
-            //_Arduino.Start();
+            _Arduino.Start();
             MockArduino = new Timer()
             {
                 AutoReset = true,
@@ -85,7 +85,7 @@ namespace PiPeWanComputer.ViewModels
 
                 FlowChartViewModel.NextPoint = new ObservablePoint(currentTime.TotalSeconds, mockData.Flow);
             };
-            MockArduino.Start();
+            //MockArduino.Start();
         }
 
         #region ViewModels
