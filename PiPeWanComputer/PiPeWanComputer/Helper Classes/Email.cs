@@ -7,7 +7,7 @@ using System.Net.Mail;
 using System.Net;
 
 namespace PiPeWanComputer.Helper_Classes {
-    public class Email {
+    public static class Email {
         #region "Static variables"
 
         private static readonly string Password = "Pipew@n1";
@@ -18,23 +18,15 @@ namespace PiPeWanComputer.Helper_Classes {
 
         #endregion
 
-        #region "Properties"
-
-        public string To { get; set; } = "";
-        public string Subject { get; set; } = "";
-        public string Body { get; set; } = "";
-
-        #endregion
-
-        public Email() { }
+        static Email() { }
 
         /// <summary>
         /// Send a warning to the building owner
         /// </summary>
-        public void SendWarning(string To, double WaterTemp, double FlowRate) {
-            Subject = "Warning! Failure imminent! " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
+        public static void SendWarning(string To, double WaterTemp, double FlowRate) {
+            string Subject = "Warning! Failure imminent! " + DateTime.Now.ToString("MM/dd/yyyy hh:mm tt");
 
-            Body = $"Dear, {To}"
+            string Body = $"Dear, {To}"
                 + "\n\nIt appears that your pipe is going to leak soon."
                 + $"\nThe current water temperature is: {WaterTemp}F"
                 + $"\nThe current flow rate is: {FlowRate}(L/Min)"
@@ -44,7 +36,7 @@ namespace PiPeWanComputer.Helper_Classes {
             Send(To, Subject, Body);
         }
 
-        public void Send(string To, string Subject, string Body) {
+        public static void Send(string To, string Subject, string Body) {
             var Client = new SmtpClient(Host, Port) {
                 Credentials = new NetworkCredential(Username, Password),
                 EnableSsl = true,
