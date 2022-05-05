@@ -77,5 +77,12 @@ namespace PiPeWanComputer {
 
             paletteHelper.SetTheme(theme);
         }
+
+        private void PasswordKeyDown(object sender, KeyEventArgs e) {
+            if (e.Key == Key.Enter) {
+                bntLogin.RaiseEvent(new RoutedEventArgs(Button.ClickEvent));
+                e.Handled = true;
+            }
+        }
     }
 }

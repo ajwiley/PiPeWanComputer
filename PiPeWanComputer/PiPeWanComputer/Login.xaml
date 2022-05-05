@@ -32,7 +32,7 @@
                 <TextBlock FontSize ="20" Margin="0, 25, 0, 5" HorizontalAlignment="Center" FontWeight="Bold" Text="PipeWan Service Login"/>
                 <TextBlock FontSize="25" FontWeight="SemiBold" HorizontalAlignment="Center" Text="Log in to an existing account"></TextBlock>
                 <TextBox Margin="0, 30, 0, 0" Text="{Binding dUsername}" x:Name="txtUsername" Width="300" FontSize="18" materialDesign:HintAssist.Hint="Enter Username" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedTextBox}"/>
-                <PasswordBox Margin="0, 20, 0, 0" x:Name="txtPassword" Width="300" FontSize="18" materialDesign:HintAssist.Hint="Enter Password" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedPasswordBox}"/>
+                <PasswordBox Margin="0, 20, 0, 0" x:Name="txtPassword" Width="300" FontSize="18" materialDesign:HintAssist.Hint="Enter Password" BorderThickness="2" BorderBrush="{DynamicResource MaterialDesignDivider}" Style="{StaticResource MaterialDesignOutlinedPasswordBox}" KeyDown="PasswordKeyDown"/>
                 <Button  Margin="0,20,0,0" x:Name="bntLogin" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" Height="53" Width="300" materialDesign:ButtonAssist.CornerRadius="10" FontSize="18" Content="LOG IN" Click="DoLogin"></Button>
             </StackPanel>
         </materialDesign:DialogHost>
