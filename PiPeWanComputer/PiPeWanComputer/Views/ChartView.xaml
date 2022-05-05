@@ -37,12 +37,12 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Wpf:CartesianChart VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DisableAnimations="True" DataTooltip="{x:Null}" Hoverable="False">
+            <Wpf:CartesianChart x:Name="CC1" VerticalAlignment="Stretch" VerticalContentAlignment="Stretch" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch" DisableAnimations="True" DataTooltip="{x:Null}" Hoverable="False">
                 <Wpf:CartesianChart.Series>
                     <Wpf:LineSeries Values="{Binding ChartValues}"/>
                 </Wpf:CartesianChart.Series>
                 <Wpf:CartesianChart.AxisX>
-                    <Wpf:Axis Title="{Binding XAxisTitle}" LabelFormatter="{Binding FormatTime}"/>
+                    <Wpf:Axis x:Name="CC1AxisX" Title="{Binding XAxisTitle}"/>
                 </Wpf:CartesianChart.AxisX>
                 <Wpf:CartesianChart.AxisY>
                     <Wpf:Axis Title="{Binding YAxisTitle}"/>

@@ -18,8 +18,10 @@ namespace PiPeWanComputer.Views {
     /// Interaction logic for ChartView.xaml
     /// </summary>
     public partial class ChartView : UserControl {
+        public Func<double, string> TimeFormatter { get; set; } = value => new DateTime((long)(value)).ToLongTimeString();
         public ChartView() {
             InitializeComponent();
+            CC1AxisX.LabelFormatter = TimeFormatter;
         }
     }
 }
