@@ -42,12 +42,12 @@ namespace PiPeWanComputer.ViewModels {
                 YAxisTitle = "Temperature (F)";
 
                 // TESTING ONLY
-                {
+                /*{
                     observablePoints.Add(new ObservablePoint(637872988690000000, nodeDatas[0].Temperature));
                     observablePoints.Add(new ObservablePoint(637872988770000000, nodeDatas[0].Temperature + 1));
                     observablePoints.Add(new ObservablePoint(637872988810000000, nodeDatas[0].Temperature + 2));
                     observablePoints.Add(new ObservablePoint(637872988860000000, 1000));
-                }
+                }*/
 
                 foreach (var nd in nodeDatas) {
                     observablePoints.Add(new ObservablePoint(nd.TimeStamp.Ticks, nd.Temperature));
@@ -67,7 +67,8 @@ namespace PiPeWanComputer.ViewModels {
             _LastClicked = "All";
 
             // All
-            MinX = ChartValues.First().X;
+            // First() Works because SelectNodeData.sql sorts the NodeData in ascending order so the oldest nodedata is added first
+            MinX = ChartValues.Count == 0 ? 0 : ChartValues.First().X; //MinX = ChartValues.Min(o => o.X);
 
             UpdateChartRange = new RelayCommand(UpdateChartRange_Execute, UpdateChartRange_CanExecute);
         }
@@ -83,7 +84,7 @@ namespace PiPeWanComputer.ViewModels {
                 switch (content) {
                     case "All":
                         // First() Works because SelectNodeData.sql sorts the NodeData in ascending order so the oldest nodedata is added first
-                        MinX = ChartValues.First().X; //MinX = ChartValues.Min(o => o.X);
+                        MinX = ChartValues.Count == 0 ? 0 : ChartValues.First().X; //MinX = ChartValues.Min(o => o.X);
                         break;
                     case "Hour":
                         MinX = DateTime.Now.Ticks - 36000000000;
