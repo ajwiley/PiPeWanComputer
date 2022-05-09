@@ -45,23 +45,28 @@ namespace PiPeWanComputer.ViewModels
 
                 FlowChartViewModel.NextPoint =  new ObservablePoint(DateTime.Now.Ticks, data.Flow);
 
-                if (data.Flow <= 1 && SentWarning == false) {
-                    if (EmailAron) {
+                if (data.Flow <= 1 && SentWarning == false)
+                {
+                    SentWarning = true;
+                    if (EmailAron)
+                    {
                         Email.SendWarning("awiley.dev@gmail.com", data.Temperature, data.Flow);
                     }
-                    if (EmailAlex) {
+                    if (EmailAlex)
+                    {
                         Email.SendWarning("rossillonalex@gmail.com", data.Temperature, data.Flow);
                     }
-                    if (emailEdgar) {
-                        Email.SendWarning("", data.Temperature, data.Flow);
+                    if (emailEdgar)
+                    {
+                        Email.SendWarning("erchavez1@shockers.wichita.edu", data.Temperature, data.Flow);
                     }
-                    if (emailMo) {
-                        Email.SendWarning("", data.Temperature, data.Flow);
+                    if (emailMo)
+                    {
+                        Email.SendWarning("mmdaoud@shockers.wichita.edu", data.Temperature, data.Flow);
                     }
-
-                    SentWarning = true;
                 }
-                else if (data.Flow >= 5) {
+                else if (data.Flow >= 5)
+                {
                     SentWarning = false;
                 }
             };
@@ -92,16 +97,16 @@ namespace PiPeWanComputer.ViewModels
             _Arduino?.Dispose();
         }
 
-        private bool emailAron;
+        private bool emailAron = true;
         public bool EmailAron { get => emailAron; set => SetProperty(ref emailAron, value); }
 
-        private bool emailAlex;
+        private bool emailAlex = true;
         public bool EmailAlex { get => emailAlex; set => SetProperty(ref emailAlex, value); }
 
-        private bool emailEdgar;
+        private bool emailEdgar = false;
         public bool EmailEdgar { get => emailEdgar; set => SetProperty(ref emailEdgar, value); }
 
-        private bool emailMo;
+        private bool emailMo = false;
         public bool EmailMo { get => emailMo; set => SetProperty(ref emailMo, value); }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -21,7 +22,11 @@ namespace PiPeWanComputer {
     public partial class Registration : Window {
         public Registration() {
             InitializeComponent();
-            PipeDB.CreateDB();
+            string dbFile = ProjectSourcePath.Value + @"SQL stuff\PipeWan.mdf";
+            if (!File.Exists(dbFile))
+            {
+                PipeDB.CreateDB();
+            }
         }
 
         private void SubmitRegistration(object sender, RoutedEventArgs e) {

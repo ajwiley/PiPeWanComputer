@@ -5,6 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:Wpf="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf" 
              xmlns:viewmodels="clr-namespace:PiPeWanComputer.ViewModels"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+             TextElement.FontWeight="Regular"
+             TextElement.FontSize="13"
+             TextOptions.TextFormattingMode="Ideal"
+             TextOptions.TextRenderingMode="Auto"
+             FontFamily="{DynamicResource MaterialDesignFont}"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance Type=viewmodels:ChartViewModel}"
              d:DesignHeight="450" d:DesignWidth="800">
@@ -16,17 +23,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-            <StackPanel.Resources>
-                <!--This style binds all these buttons to the same command. To tell which button was pressed, the Command Parameter is set to the button itself.-->
-                <Style TargetType="Button">
-                    <Setter Property="Command" Value="{Binding UpdateChartRange}"/>
-                    <Setter Property="CommandParameter" Value="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}"/>
-                    <Setter Property="Width" Value="50"/>
-                </Style>
-            </StackPanel.Resources>
-            <Button Content="All"/>
-            <Button Content="Hour"/>
-            <Button Content="Minute"/>
+            <Button Content="All" Command="{Binding UpdateChartRange}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Width="100" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:ButtonAssist.CornerRadius="10"/>
+            <Button Content="Hour" Command="{Binding UpdateChartRange}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Width="100" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:ButtonAssist.CornerRadius="10"/>
+            <Button Content="Minute" Command="{Binding UpdateChartRange}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}, Path=Content}" Width="100" Style="{StaticResource MaterialDesignFlatMidBgButton}" materialDesign:ShadowAssist.ShadowDepth="Depth0" materialDesign:ButtonAssist.CornerRadius="10"/>
         </StackPanel>
 
         <Grid Grid.Row="1">
